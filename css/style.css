@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #111111;
+    color: #ffffff;
+}
+.container-bg {
+    background-color: #222222;
+}
+.btn-monochrome {
+    background-color: #444444;
+    color: #ffffff;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    border: 2px solid #555555;
+}
+.btn-monochrome:hover {
+    transform: scale(1.05);
+    background-color: #555555;
+}
+.btn-monochrome:active {
+    transform: scale(0.95);
+}
+.input-monochrome {
+    background-color: #333333;
+    border: 1px solid #555555;
+    color: #ffffff;
+}
+.card-container {
+    perspective: 1000px;
+}
+.card {
+    width: 100%;
+    height: 300px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+.card.revealed {
+    transform: rotateY(180deg);
+}
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 1.5rem;
+    border: 2px solid;
+    padding: 2rem;
+}
+.card-back {
+    background: #2b2b2b;
+    transform: rotateY(180deg);
+    border-color: #444444;
+}
+.card-front {
+    background: #2b2b2b;
+    border-color: #777777;
+}
+.card-back .word {
+    font-size: 2rem;
+}
+.green-border {
+    border-color: #4CAF50; /* Un verde sutil para los jugadores */
+}
+.red-border {
+    border-color: #F44336; /* Un rojo sutil para los impostores */
+}
+@media (max-width: 768px) {
+    .card-back .word {
+        font-size: 1.5rem;
+    }
+}
