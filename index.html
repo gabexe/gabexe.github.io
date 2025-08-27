@@ -3,15 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impostor Game</title>
+    <title>Impostor</title>
     <!-- Incluyendo Tailwind CSS para un diseño rápido y responsivo -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilos base para el cuerpo y el canvas */
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        canvas {
+            position: fixed; /* Asegura que el canvas cubra todo el fondo */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Coloca el canvas detrás del contenido */
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body>
+    <canvas id="starCanvas"></canvas>
 
     <!-- Contenedor principal del juego -->
-    <div id="game-container" class="w-full max-w-2xl p-6 md:p-10 rounded-3xl container-bg shadow-lg transition-all duration-500 ease-in-out">
+    <div id="game-container" class="w-full max-w-2xl p-6 md:p-10 rounded-3xl shadow-lg transition-all duration-500 ease-in-out" style="background-color: rgba(21, 21, 21, 0.8);">
         
         <!-- Pantalla de inicio (Home) -->
         <div id="home-screen" class="text-center transition-opacity duration-500 ease-in-out">
@@ -91,5 +116,95 @@
 
     <script src="js/database.js"></script>
     <script src="js/main.js"></script>
+    <script>
+        window.onload = function() {
+            // Objeto de configuración para las estrellas
+            const starConfig = {
+                numberOfStars: 500,
+                minRadius: 1,
+                maxRadius: 1.5,
+                minOpacity: 0.1,
+                maxOpacity: 0.9,
+                minSpeed: 0.0006,
+                maxSpeed: 0.01
+            };
+
+            const canvas = document.getElementById('starCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            // Clase para las estrellas
+            class Star {
+                constructor(x, y, radius, opacity) {
+                    this.x = x;
+                    this.y = y;
+                    this.radius = radius;
+                    this.opacity = opacity;
+                    this.direction = 1;
+                    this.speed = Math.random() * (starConfig.maxSpeed - starConfig.minSpeed) + starConfig.minSpeed;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.fill();
+                }
+
+                update() {
+                    this.opacity += this.direction * this.speed;
+
+                    if (this.opacity >= starConfig.maxOpacity || this.opacity <= starConfig.minOpacity) {
+                        this.direction *= -1;
+                    }
+                }
+            }
+
+            const stars = [];
+
+            function createStars() {
+                stars.length = 0;
+                for (let i = 0; i < starConfig.numberOfStars; i++) {
+                    const x = Math.random() * width;
+                    const y = Math.random() * height;
+                    const radius = Math.random() * (starConfig.maxRadius - starConfig.minRadius) + starConfig.minRadius;
+                    const opacity = Math.random() * (starConfig.maxOpacity - starConfig.minOpacity) + starConfig.minOpacity;
+                    stars.push(new Star(x, y, radius, opacity));
+                }
+            }
+
+            createStars();
+
+            function animate() {
+                // Limpia el canvas
+                ctx.clearRect(0, 0, width, height);
+
+                // Actualiza y dibuja las estrellas
+                stars.forEach(star => {
+                    star.update();
+                    star.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                createStars();
+            });
+
+            if (canvas) {
+                animate();
+            }
+        };
+
+    </script>
 </body>
 </html>
