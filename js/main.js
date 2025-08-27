@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNCIONES ---
 
-    // Función para cambiar de pantalla
     function showScreen(screen) {
         homeScreen.classList.add('hidden');
         optionsScreen.classList.add('hidden');
@@ -43,22 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
         screen.classList.remove('hidden');
     }
 
-    // Función para poblar la lista de categorías
     function populateCategories() {
         categoryList.innerHTML = '';
         const categories = Object.keys(wordsDB);
 
         categories.forEach(category => {
             const categoryId = `category-${category.replace(/\s+/g, '-')}`;
-
             const wrapper = document.createElement('div');
-            wrapper.classList.add('flex', 'items-center', 'p-2', 'rounded-lg', 'hover:bg-gray-700');
+            wrapper.classList.add('flex', 'items-center', 'p-2', 'rounded-lg', 'hover:bg-gray-700/50');
+            wrapper.dataset.categoryName = category.toLowerCase();
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = categoryId;
             checkbox.value = category;
-            checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'text-gray-600', 'bg-gray-800', 'border-gray-600');
+            checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'text-gray-600', 'bg-gray-800', 'border-gray-600', 'cursor-pointer');
 
             const label = document.createElement('label');
             label.htmlFor = categoryId;
@@ -66,10 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
             label.classList.add('ml-3', 'text-gray-300', 'w-full', 'cursor-pointer');
 
             if (category.toLowerCase() === 'lol') {
-                wrapper.classList.add('hidden'); // Oculto por defecto
+                wrapper.classList.add('hidden');
                 checkbox.checked = false;
             } else {
-                checkbox.checked = true; // Marcado por defecto
+                checkbox.checked = true;
             }
 
             wrapper.appendChild(checkbox);
@@ -82,10 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     optionsButtonHome.addEventListener('click', () => {
         showScreen(optionsScreen);
-        // Resetear el easter egg y el filtro al abrir opciones
         backButtonOptions.textContent = 'Volver';
         categorySearch.value = '';
+        
+        // Resetear visibilidad de categorías y estado de "lol"
         Array.from(categoryList.children).forEach(child => {
+            if (child.dataset.categoryName === 'lol') {
+                child.classList.add('hidden');
+                child.querySelector('input').checked = false;
+            }
             child.style.display = 'flex';
         });
     });
@@ -98,48 +101,41 @@ document.addEventListener('DOMContentLoaded', () => {
         messageBox.classList.add('hidden');
     });
 
-    // Evento para el buscador de categorías
     categorySearch.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toUpperCase();
+        const searchTerm = e.target.value;
+        const lolWrapper = categoryList.querySelector('[data-category-name="lol"]');
 
         if (searchTerm === 'CARPA') {
-            const lolCategory = categoryList.querySelector('input[value="Lol"]');
-            if (lolCategory) {
-                lolCategory.parentElement.classList.remove('hidden');
-                lolCategory.checked = true;
-            }
+            lolWrapper.classList.remove('hidden');
+            lolWrapper.querySelector('input').checked = true;
             backButtonOptions.textContent = 'Volver :)';
         } else {
-            backButtonOptions.textContent = 'Volver';
+            if (backButtonOptions.textContent === 'Volver :)') {
+                 backButtonOptions.textContent = 'Volver';
+            }
         }
 
         Array.from(categoryList.children).forEach(child => {
-            const label = child.querySelector('label');
-            if (label) {
-                const categoryName = label.textContent.toUpperCase();
-                const lolWrapper = categoryList.querySelector('input[value="Lol"]').parentElement;
+            const categoryName = child.querySelector('label').textContent.toUpperCase();
+            
+            // No ocultar 'lol' si fue revelado
+            if (child.dataset.categoryName === 'lol' && !lolWrapper.classList.contains('hidden')) {
+                child.style.display = 'flex';
+                return;
+            }
 
-                if (categoryName.includes(searchTerm)) {
-                    child.style.display = 'flex';
-                } else {
-                    child.style.display = 'none';
-                }
-                
-                // Asegurarse que la categoría 'lol' se mantenga visible si se activó
-                if (!lolWrapper.classList.contains('hidden')) {
-                    lolWrapper.style.display = 'flex';
-                }
+            if (categoryName.includes(searchTerm.toUpperCase())) {
+                child.style.display = 'flex';
+            } else {
+                child.style.display = 'none';
             }
         });
     });
 
-
-    // Lógica para iniciar el juego
     startButtonHome.addEventListener('click', () => {
         const playerCount = parseInt(playerCountInput.value, 10);
         const impostorCount = parseInt(impostorCountInput.value, 10);
 
-        // Validaciones de jugadores
         if (playerCount < 4 || playerCount > 10) {
             errorMessage.textContent = 'El número de jugadores debe ser entre 4 y 10.';
             errorMessage.classList.remove('hidden');
@@ -156,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Validación de categorías
         const selectedCategories = Array.from(categoryList.querySelectorAll('input:checked')).map(cb => cb.value);
         if (selectedCategories.length === 0) {
             errorMessage.textContent = 'Debes seleccionar al menos una categoría.';
@@ -166,14 +161,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         errorMessage.classList.add('hidden');
 
-        // Seleccionar una palabra y categoría al azar de las seleccionadas
         const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
         currentCategory = randomCategory;
         const availableWords = wordsDB[randomCategory];
         const randomIndex = Math.floor(Math.random() * availableWords.length);
         currentWord = availableWords[randomIndex];
 
-        // Asignar roles a los jugadores
         players = [];
         for (let i = 0; i < playerCount; i++) {
             players.push({ role: 'normal' });
@@ -190,16 +183,13 @@ document.addEventListener('DOMContentLoaded', () => {
             players[index].role = 'impostor';
         });
         
-        // Mezcla los jugadores
         players.sort(() => Math.random() - 0.5);
 
-        // Iniciar el juego
         currentPlayerIndex = 0;
         showScreen(gameScreen);
         updateCard();
     });
 
-    // Lógica de la tarjeta
     gameCard.addEventListener('click', () => {
         if (gameCard.classList.contains('revealed')) {
             currentPlayerIndex++;
@@ -231,13 +221,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Función para actualizar la tarjeta
     function updateCard() {
         gameCard.classList.remove('revealed');
         playerTurnText.innerHTML = `Jugador ${currentPlayerIndex + 1} <span class="text-gray-500">- ${currentCategory}</span>`;
     }
 
-    // Lógica para volver a jugar
     playAgainButton.addEventListener('click', () => {
         if (playAgainButton.textContent === 'Revelar Palabra') {
             playAgainButton.textContent = `Palabra: ${currentWord}`;
