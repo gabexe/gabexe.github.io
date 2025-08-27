@@ -137,13 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const playerCount = parseInt(playerCountInput.value, 10);
         const impostorCount = parseInt(impostorCountInput.value, 10);
 
-        if (playerCount < 4 || playerCount > 10) {
-            errorMessage.textContent = 'El número de jugadores debe ser entre 4 y 10.';
+        if (playerCount < 3 || playerCount > 100) {
+            errorMessage.textContent = 'El número de jugadores debe ser entre 3 y 100.';
             errorMessage.classList.remove('hidden');
             return;
         }
-        if (impostorCount < 1 || impostorCount > 3) {
-            errorMessage.textContent = 'El número de impostores debe ser entre 1 y 3.';
+        if (impostorCount < 1 || impostorCount > 100) {
+            errorMessage.textContent = 'El número de impostores debe ser entre 1 y 100.';
             errorMessage.classList.remove('hidden');
             return;
         }
