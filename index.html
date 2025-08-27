@@ -39,13 +39,12 @@
                     <input type="checkbox" id="show-impostor-category" class="form-checkbox h-5 w-5 text-gray-600">
                     <label for="show-impostor-category" class="text-sm font-medium text-gray-300">Mostrar categoría al impostor</label>
                 </div>
-            </div>
-            <button id="back-button-options" class="btn-monochrome px-8 py-4 rounded-full text-lg font-bold">Volver</button>
-            <div class="space-y-4 mb-8">
-                <label for="category-search" class="block text-sm font-medium text-gray-300 mb-2">Categorías</label>
-                <input type="text" id="category-search" placeholder="Buscar categorías..." class="input-monochrome w-full md:w-1/2 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 text-center">
-                <div id="category-list" class="grid grid-cols-2 md:grid-cols-3 gap-4 text-left">
-                    <!-- Las categorías se insertarán aquí dinámicamente -->
+                <div>
+                    <label for="category-search" class="block text-sm font-medium text-gray-300 mb-2">Categorías</label>
+                    <input type="text" id="category-search" placeholder="Buscar categorías..." class="input-monochrome w-full md:w-1/2 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 text-center">
+                    <div id="category-list" class="mt-4 max-h-40 overflow-y-auto grid grid-cols-1 gap-2 text-left mx-auto max-w-sm">
+                        <!-- Las categorías se insertarán aquí dinámicamente -->
+                    </div>
                 </div>
             </div>
             <button id="back-button-options" class="btn-monochrome px-8 py-4 rounded-full text-lg font-bold">Volver</button>
