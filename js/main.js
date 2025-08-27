@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checkbox.type = 'checkbox';
             checkbox.id = categoryId;
             checkbox.value = category;
-            checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'text-gray-600', 'bg-gray-800', 'border-gray-600', 'cursor-pointer');
+            checkbox.classList.add('form-checkbox', 'h-5', 'w-5', 'text-gray-600', 'bg-gray-800', 'border-gray-600');
 
             const label = document.createElement('label');
             label.htmlFor = categoryId;
@@ -64,8 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             label.classList.add('ml-3', 'text-gray-300', 'w-full', 'cursor-pointer');
 
             if (category.toLowerCase() === 'lol') {
-                wrapper.classList.add('hidden');
                 checkbox.checked = false;
+                checkbox.disabled = true; // Deshabilitado por defecto
+                label.classList.add('opacity-50'); // Estilo visual para deshabilitado
             } else {
                 checkbox.checked = true;
             }
@@ -82,14 +83,18 @@ document.addEventListener('DOMContentLoaded', () => {
         showScreen(optionsScreen);
         backButtonOptions.textContent = 'Volver';
         categorySearch.value = '';
+
+        // Resetear estado de "lol"
+        const lolCheckbox = categoryList.querySelector('input[value="Lol"]');
+        if (lolCheckbox) {
+            lolCheckbox.disabled = true;
+            lolCheckbox.checked = false;
+            lolCheckbox.nextElementSibling.classList.add('opacity-50');
+        }
         
-        // Resetear visibilidad de categorías y estado de "lol"
+        // Resetear visibilidad del filtro
         Array.from(categoryList.children).forEach(child => {
-            child.classList.remove('hidden'); // Primero muéstralos todos
-            if (child.dataset.categoryName === 'lol') {
-                child.classList.add('hidden'); // Oculta específicamente 'lol'
-                child.querySelector('input').checked = false;
-            }
+            child.classList.remove('hidden');
         });
     });
 
@@ -103,13 +108,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     categorySearch.addEventListener('input', (e) => {
         const searchTerm = e.target.value;
-        const lolWrapper = categoryList.querySelector('[data-category-name="lol"]');
+        const lolCheckbox = categoryList.querySelector('input[value="Lol"]');
+        const lolLabel = lolCheckbox.nextElementSibling;
 
         if (searchTerm === 'CARPA') {
-            lolWrapper.classList.remove('hidden');
-            lolWrapper.querySelector('input').checked = true;
+            lolCheckbox.disabled = false;
+            lolLabel.classList.remove('opacity-50');
             backButtonOptions.textContent = 'Volver :)';
         } else {
+            // No lo deshabilita si ya se activó, solo resetea el botón
             if (backButtonOptions.textContent === 'Volver :)') {
                  backButtonOptions.textContent = 'Volver';
             }
@@ -118,12 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const upperSearchTerm = searchTerm.toUpperCase();
         Array.from(categoryList.children).forEach(child => {
             const categoryName = child.querySelector('label').textContent.toUpperCase();
-            
-            // No ocultar 'lol' si fue revelado
-            if (child.dataset.categoryName === 'lol' && !lolWrapper.classList.contains('hidden')) {
-                return;
-            }
-
             if (categoryName.includes(upperSearchTerm)) {
                 child.classList.remove('hidden');
             } else {
