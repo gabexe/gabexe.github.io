@@ -85,11 +85,11 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Resetear visibilidad de categorías y estado de "lol"
         Array.from(categoryList.children).forEach(child => {
+            child.classList.remove('hidden'); // Primero muéstralos todos
             if (child.dataset.categoryName === 'lol') {
-                child.classList.add('hidden');
+                child.classList.add('hidden'); // Oculta específicamente 'lol'
                 child.querySelector('input').checked = false;
             }
-            child.style.display = 'flex';
         });
     });
 
@@ -115,19 +115,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const upperSearchTerm = searchTerm.toUpperCase();
         Array.from(categoryList.children).forEach(child => {
             const categoryName = child.querySelector('label').textContent.toUpperCase();
             
             // No ocultar 'lol' si fue revelado
             if (child.dataset.categoryName === 'lol' && !lolWrapper.classList.contains('hidden')) {
-                child.style.display = 'flex';
                 return;
             }
 
-            if (categoryName.includes(searchTerm.toUpperCase())) {
-                child.style.display = 'flex';
+            if (categoryName.includes(upperSearchTerm)) {
+                child.classList.remove('hidden');
             } else {
-                child.style.display = 'none';
+                child.classList.add('hidden');
             }
         });
     });
