@@ -27,13 +27,13 @@
             <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6">Opciones</h2>
             <div class="space-y-4 md:space-y-6 mb-6 md:mb-8">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                <div class="grid grid-cols-2 gap-4 md:gap-6">
                     <div>
-                        <label for="player-count" class="block text-sm font-medium text-gray-300 mb-2">Número de jugadores</label>
+                        <label for="player-count" class="block text-sm font-medium text-gray-300 mb-2">Jugadores</label>
                         <input type="number" id="player-count" value="4" min="4" max="10" class="input-monochrome w-full p-2 md:p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 text-center">
                     </div>
                     <div>
-                        <label for="impostor-count" class="block text-sm font-medium text-gray-300 mb-2">Número de impostores</label>
+                        <label for="impostor-count" class="block text-sm font-medium text-gray-300 mb-2">Impostores</label>
                         <input type="number" id="impostor-count" value="1" min="1" max="3" class="input-monochrome w-full p-2 md:p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 text-center">
                     </div>
                 </div>
@@ -48,11 +48,11 @@
                     <h3 class="text-lg font-semibold mb-2">Roles Especiales</h3>
                     <div class="space-y-2">
                         <div class="flex items-center justify-between max-w-xs mx-auto">
-                            <label for="accomplice-toggle" class="text-sm font-medium text-gray-300">Activar Cómplice</label>
+                            <label for="accomplice-toggle" class="text-sm font-medium text-gray-300">Cómplice</label>
                             <input type="checkbox" id="accomplice-toggle" class="form-checkbox h-5 w-5 text-gray-600">
                         </div>
                         <div class="flex items-center justify-between max-w-xs mx-auto">
-                            <label for="clueless-toggle" class="text-sm font-medium text-gray-300">Activar Distraído</label>
+                            <label for="clueless-toggle" class="text-sm font-medium text-gray-300">Distraído</label>
                             <input type="checkbox" id="clueless-toggle" class="form-checkbox h-5 w-5 text-gray-600">
                         </div>
                     </div>
@@ -102,25 +102,25 @@
 
         <div id="how-to-play-screen" class="text-left hidden transition-opacity duration-500 ease-in-out">
             <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-center">Cómo Jugar</h2>
-            <div class="space-y-4 text-gray-300">
+            <div class="space-y-2 text-gray-300">
                 <div>
-                    <h3 class="text-lg font-semibold text-white">Objetivo del Juego</h3>
-                    <p>Los jugadores normales deben descubrir al impostor. El impostor debe pasar desapercibido.</p>
+                    <h3 class="text-base font-semibold text-white">Objetivo</h3>
+                    <p>Normales: Descubrir al impostor. Impostor: No ser descubierto.</p>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-white">Roles</h3>
-                    <ul class="list-disc list-inside space-y-2">
+                    <h3 class="text-base font-semibold text-white">Roles</h3>
+                    <ul class="list-disc list-inside space-y-1">
                         <li>
-                            <strong class="text-white">Normal:</strong> Recibes una palabra secreta. Tu objetivo es encontrar al impostor haciendo preguntas y observando quién actúa de forma sospechosa.
+                            <strong class="text-white">Normal:</strong> Conoces la palabra. Encuentra al impostor.
                         </li>
                         <li>
-                            <strong class="text-white">Impostor:</strong> No conoces la palabra secreta. Tu objetivo es hacerte pasar por un jugador normal para que no te descubran.
+                            <strong class="text-white">Impostor:</strong> No conoces la palabra. Hazte pasar por normal.
                         </li>
                         <li>
-                            <strong class="text-white">Cómplice (Opcional):</strong> Conoces la palabra y sabes quién es el impostor. Tu objetivo es ayudar al impostor a ganar sin que los demás se den cuenta de que eres el cómplice.
+                            <strong class="text-white">Cómplice (Opcional):</strong> Conoces la palabra y al impostor. Ayúdalo sin ser obvio.
                         </li>
                         <li>
-                            <strong class="text-white">Distraído (Opcional):</strong> Recibes una palabra similar pero no igual a la de los jugadores normales. No sabes que eres el distraído, así que actuarás de forma natural, pero tus respuestas podrían parecer extrañas para los demás.
+                            <strong class="text-white">Distraído (Opcional):</strong> Tienes una palabra diferente. No sabes que eres distraído.
                         </li>
                     </ul>
                 </div>
