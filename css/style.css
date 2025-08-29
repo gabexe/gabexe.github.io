@@ -28,7 +28,6 @@ body {
 #game-container {
     width: 100%;
     max-width: 640px;
-    margin: auto;
     padding: 1.5rem;
     background-color: rgba(43, 43, 43, 0.25);
     backdrop-filter: blur(5px);
@@ -132,9 +131,4 @@ body {
     }
 }
 
-/* Aplicar filtro de ruido solo en pantallas grandes */
-@media (min-width: 768px) {
-    #game-container {
-        filter: url(#nnnoise-filter);
-    }
-}
+
