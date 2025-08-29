@@ -8,4 +8,4 @@ Luego, todos discuten y, basándose en la conversación, los jugadores normales 
 * "Distraído": Un jugador que recibe una palabra ligeramente diferente a la de los demás (por ejemplo, "Naranja" en lugar de "Mandarina"), lo que podría llevar a que lo confundan con un impostor.
 
 To-do
-- [] Arreglar opciones que no se guardan: (numero de jugadores e impostores)
+- [ ] Arreglar opciones que no se guardan: (numero de jugadores e impostores)
