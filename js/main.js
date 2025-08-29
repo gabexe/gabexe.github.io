@@ -43,11 +43,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FUNCIONES ---
 
     function showScreen(screen) {
+        const gameContainer = document.getElementById('game-container');
         homeScreen.classList.add('hidden');
         optionsScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         endScreen.classList.add('hidden');
         howToPlayScreen.classList.add('hidden');
+        
+        if (screen === optionsScreen || screen === howToPlayScreen) {
+            gameContainer.classList.add('fullscreen-container');
+        } else {
+            gameContainer.classList.remove('fullscreen-container');
+        }
+
         screen.classList.remove('hidden');
     }
 
