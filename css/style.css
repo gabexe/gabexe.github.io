@@ -2,13 +2,13 @@
 
 body {
     margin: 0;
-    overflow: hidden;
+    /* overflow: hidden; */ /* Removed to allow scrolling on mobile */
     background-color: #000;
     font-family: 'Inter', sans-serif;
     color: white;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Changed to align top on long screens */
     min-height: 100vh;
     text-align: center;
     padding: 1rem;
