@@ -8,17 +8,11 @@ body {
     color: white;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Default to top alignment for mobile */
+    align-items: center; /* Always center */
     min-height: 100vh;
     text-align: center;
     padding: 1rem;
     box-sizing: border-box;
-}
-
-@media (min-width: 768px) { /* Apply centering on larger screens */
-    body {
-        align-items: center;
-    }
 }
 
 #fireflyCanvas {
