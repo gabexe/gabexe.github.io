@@ -1,4 +1,4 @@
-# Impostor
+# Impostor 🕵️‍♂️
 
 Juego de deducción social.
 
@@ -15,9 +15,9 @@ Luego, todos discuten y, basándose en la conversación, los jugadores inocentes
 
 ## Tecnologías Utilizadas
 
-*   **HTML5**: Para la estructura de la aplicación.
-*   **TailwindCSS**: Para el diseño y los estilos de la interfaz.
-*   **JavaScript (ES6+)**: Para toda la lógica del juego e interactividad.
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 
 ## Estructura del Proyecto
 
@@ -29,5 +29,5 @@ Luego, todos discuten y, basándose en la conversación, los jugadores inocentes
 *   `js/fireflies.js`: Script para generar un fondo animado de luciérnagas.
 *   `README.md`: Este archivo.
 
-## To-do
+## To-do ✅
 - [ ] Arreglar opciones que no se guardan: (numero de jugadores e impostores)
