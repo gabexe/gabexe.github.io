@@ -16,9 +16,10 @@
         <div id="home-screen" class="text-center transition-opacity duration-500 ease-in-out">
             <h1 class="text-4xl md:text-6xl font-bold mb-4">Impostor</h1>
             <p class="text-gray-400 mb-8 md:text-lg">Descubre al impostor antes de que sea tarde.</p>
-            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-center">
+            <div class="flex flex-wrap flex-col md:flex-row justify-center gap-4">
                 <button id="start-button-home" class="btn-monochrome px-8 py-4 rounded-full text-lg font-bold">Iniciar Juego</button>
                 <button id="options-button-home" class="btn-monochrome px-8 py-4 rounded-full text-lg font-bold">Opciones</button>
+                <button id="how-to-play-button-home" class="btn-monochrome px-8 py-4 rounded-full text-lg font-bold">Cómo Jugar</button>
             </div>
         </div>
 
@@ -40,6 +41,27 @@
                 <div class="flex items-center justify-center space-x-2 pt-2">
                     <input type="checkbox" id="show-impostor-category" class="form-checkbox h-5 w-5 text-gray-600" checked>
                     <label for="show-impostor-category" class="text-sm font-medium text-gray-300">Mostrar categoría al impostor</label>
+                </div>
+
+                <!-- Nuevos Roles -->
+                <div class="border-t border-gray-700 pt-4">
+                    <h3 class="text-lg font-semibold mb-2">Roles Especiales</h3>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between max-w-xs mx-auto">
+                            <label for="accomplice-toggle" class="text-sm font-medium text-gray-300">Activar Cómplice</label>
+                            <input type="checkbox" id="accomplice-toggle" class="form-checkbox h-5 w-5 text-gray-600">
+                        </div>
+                        <div class="flex items-center justify-between max-w-xs mx-auto">
+                            <label for="clueless-toggle" class="text-sm font-medium text-gray-300">Activar Distraído</label>
+                            <input type="checkbox" id="clueless-toggle" class="form-checkbox h-5 w-5 text-gray-600">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Probabilidad de Rol Especial -->
+                <div>
+                    <label for="special-role-probability" class="block text-sm font-medium text-gray-300 mb-2">Probabilidad de Rol Especial: <span id="special-role-probability-value">50</span>%</label>
+                    <input type="range" id="special-role-probability" min="0" max="100" value="50" class="w-full max-w-xs mx-auto">
                 </div>
 
                 <div>
@@ -70,16 +92,47 @@
         <div id="end-screen" class="text-center hidden transition-opacity duration-500 ease-in-out">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">Juego Finalizado</h2>
             <p id="final-message" class="text-gray-300 text-lg mb-6">¡Discutan quiénes son los impostores!</p>
-            <button id="play-again-button" class="btn-monochrome px-6 py-3 rounded-full text-md font-bold">Revelar Palabra</button>
+            <button id="play-again-button" class="btn-monochrome px-6 py-3 rounded-full text-md font-bold">Resultados</button>
         </div>
 
         <div id="message-box" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white p-6 rounded-2xl shadow-lg border border-gray-500 hidden z-50">
             <p id="message-text" class="text-lg font-semibold mb-4 text-center"></p>
             <button id="close-message" class="btn-monochrome w-full py-2 rounded-full font-bold">OK</button>
         </div>
+
+        <div id="how-to-play-screen" class="text-left hidden transition-opacity duration-500 ease-in-out">
+            <h2 class="text-2xl md:text-4xl font-bold mb-4 md:mb-6 text-center">Cómo Jugar</h2>
+            <div class="space-y-4 text-gray-300">
+                <div>
+                    <h3 class="text-lg font-semibold text-white">Objetivo del Juego</h3>
+                    <p>Los jugadores normales deben descubrir al impostor. El impostor debe pasar desapercibido.</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-white">Roles</h3>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>
+                            <strong class="text-white">Normal:</strong> Recibes una palabra secreta. Tu objetivo es encontrar al impostor haciendo preguntas y observando quién actúa de forma sospechosa.
+                        </li>
+                        <li>
+                            <strong class="text-white">Impostor:</strong> No conoces la palabra secreta. Tu objetivo es hacerte pasar por un jugador normal para que no te descubran.
+                        </li>
+                        <li>
+                            <strong class="text-white">Cómplice (Opcional):</strong> Conoces la palabra y sabes quién es el impostor. Tu objetivo es ayudar al impostor a ganar sin que los demás se den cuenta de que eres el cómplice.
+                        </li>
+                        <li>
+                            <strong class="text-white">Distraído (Opcional):</strong> Recibes una palabra similar pero no igual a la de los jugadores normales. No sabes que eres el distraído, así que actuarás de forma natural, pero tus respuestas podrían parecer extrañas para los demás.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-6">
+                <button id="back-button-how-to-play" class="btn-monochrome px-6 py-3 rounded-full text-base font-bold">Volver</button>
+            </div>
+        </div>
     </div>
 
     <script src="js/database.js"></script>
+    <script src="js/distraido.js"></script>
     <script src="js/main.js"></script>
     <script src="js/fireflies.js"></script>
 </body>

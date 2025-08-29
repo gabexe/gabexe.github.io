@@ -3,15 +3,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionsScreen = document.getElementById('options-screen');
     const gameScreen = document.getElementById('game-screen');
     const endScreen = document.getElementById('end-screen');
+    const howToPlayScreen = document.getElementById('how-to-play-screen');
 
     const startButtonHome = document.getElementById('start-button-home');
     const optionsButtonHome = document.getElementById('options-button-home');
     const backButtonOptions = document.getElementById('back-button-options');
+    const howToPlayButtonHome = document.getElementById('how-to-play-button-home');
+    const backButtonHowToPlay = document.getElementById('back-button-how-to-play');
 
     const playerCountInput = document.getElementById('player-count');
     const impostorCountInput = document.getElementById('impostor-count');
     const showImpostorCategoryCheckbox = document.getElementById('show-impostor-category');
     const errorMessage = document.getElementById('error-message');
+
+    const accompliceToggle = document.getElementById('accomplice-toggle');
+    const cluelessToggle = document.getElementById('clueless-toggle');
+    const specialRoleProbability = document.getElementById('special-role-probability');
+    const specialRoleProbabilityValue = document.getElementById('special-role-probability-value');
 
     const gameCard = document.getElementById('game-card');
     const playerTurnText = document.getElementById('player-turn-text');
@@ -29,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let players = [];
     let currentPlayerIndex = 0;
     let currentWord = '';
+    let distraidoWord = '';
     let currentCategory = '';
 
     // --- FUNCIONES ---
@@ -38,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         optionsScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         endScreen.classList.add('hidden');
+        howToPlayScreen.classList.add('hidden');
         screen.classList.remove('hidden');
     }
 
@@ -77,6 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- LÓGICA DE NAVEGACIÓN Y EVENTOS ---
+
+    howToPlayButtonHome.addEventListener('click', () => {
+        showScreen(howToPlayScreen);
+    });
+
+    backButtonHowToPlay.addEventListener('click', () => {
+        showScreen(homeScreen);
+    });
+
+    specialRoleProbability.addEventListener('input', (e) => {
+        specialRoleProbabilityValue.textContent = e.target.value;
+    });
 
     optionsButtonHome.addEventListener('click', () => {
         showScreen(optionsScreen);
@@ -135,6 +157,13 @@ document.addEventListener('DOMContentLoaded', () => {
     startButtonHome.addEventListener('click', () => {
         const playerCount = parseInt(playerCountInput.value, 10);
         const impostorCount = parseInt(impostorCountInput.value, 10);
+        const useAccomplice = accompliceToggle.checked;
+        const useClueless = cluelessToggle.checked;
+        const probability = parseInt(specialRoleProbability.value, 10);
+
+        let specialRolesCount = 0;
+        if (useAccomplice) specialRolesCount++;
+        if (useClueless) specialRolesCount++;
 
         if (playerCount < 3 || playerCount > 100) {
             errorMessage.textContent = 'El número de jugadores debe ser entre 3 y 100.';
@@ -146,8 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessage.classList.remove('hidden');
             return;
         }
-        if (impostorCount >= playerCount) {
-            errorMessage.textContent = 'El número de impostores no puede ser mayor o igual al de jugadores.';
+        if (impostorCount + specialRolesCount >= playerCount) {
+            errorMessage.textContent = 'No hay suficientes jugadores para tantos roles.';
             errorMessage.classList.remove('hidden');
             return;
         }
@@ -164,25 +193,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
         currentCategory = randomCategory;
         const availableWords = wordsDB[randomCategory];
+        const availableWordsDistraido = wordsDB_distraido[randomCategory];
         const randomIndex = Math.floor(Math.random() * availableWords.length);
         currentWord = availableWords[randomIndex];
+        distraidoWord = availableWordsDistraido[randomIndex];
 
         players = [];
         for (let i = 0; i < playerCount; i++) {
             players.push({ role: 'normal' });
         }
+
+        let availableIndices = Array.from(Array(playerCount).keys());
         
         const impostorIndices = [];
-        while (impostorIndices.length < impostorCount) {
-            const randomPlayerIndex = Math.floor(Math.random() * playerCount);
-            if (!impostorIndices.includes(randomPlayerIndex)) {
-                impostorIndices.push(randomPlayerIndex);
-            }
+        for (let i = 0; i < impostorCount; i++) {
+            const randomIndex = Math.floor(Math.random() * availableIndices.length);
+            const impostorIndex = availableIndices.splice(randomIndex, 1)[0];
+            players[impostorIndex].role = 'impostor';
         }
-        impostorIndices.forEach(index => {
-            players[index].role = 'impostor';
-        });
-        
+
+        if (useAccomplice && Math.random() * 100 < probability) {
+            const randomIndex = Math.floor(Math.random() * availableIndices.length);
+            const accompliceIndex = availableIndices.splice(randomIndex, 1)[0];
+            players[accompliceIndex].role = 'accomplice';
+        }
+
+        if (useClueless && Math.random() * 100 < probability) {
+            const randomIndex = Math.floor(Math.random() * availableIndices.length);
+            const cluelessIndex = availableIndices.splice(randomIndex, 1)[0];
+            players[cluelessIndex].role = 'clueless';
+            players[cluelessIndex].word = distraidoWord;
+        }
+
         players.sort(() => Math.random() - 0.5);
 
         currentPlayerIndex = 0;
@@ -196,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentPlayerIndex < players.length) {
                 updateCard();
             } else {
-                playAgainButton.textContent = 'Revelar Palabra';
+                playAgainButton.textContent = 'Revelar Roles';
                 showScreen(endScreen);
             }
         } else {
@@ -211,7 +253,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 cardBack.innerHTML = `<p class="word">${content}</p>`;
                 cardBack.classList.remove('green-border');
                 cardBack.classList.add('red-border');
-            } else {
+            } else if (player.role === 'accomplice') {
+                cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(Ayuda al impostor)</p>`;
+                cardBack.classList.remove('red-border');
+                cardBack.classList.add('green-border');
+            } else if (player.role === 'clueless') {
+                cardBack.innerHTML = `<p class="word">${player.word}</p>`;
+                cardBack.classList.remove('red-border');
+                cardBack.classList.add('green-border');
+            } else { // normal
                 cardBack.innerHTML = `<p class="word">${currentWord}</p>`;
                 cardBack.classList.remove('red-border');
                 cardBack.classList.add('green-border');
@@ -227,10 +277,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     playAgainButton.addEventListener('click', () => {
-        if (playAgainButton.textContent === 'Revelar Palabra') {
-            playAgainButton.textContent = `Palabra: ${currentWord}`;
+        if (playAgainButton.textContent === 'Revelar Roles') {
+            const finalMessageEl = document.getElementById('final-message');
+            
+            let resultsHTML = `La palabra era: <strong>${currentWord}</strong>`;
+
+            const impostors = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'impostor');
+            if (impostors.length > 0) {
+                resultsHTML += `<br/>Impostor(es): <strong>Jugador ${impostors.map(p => p.playerNum).join(', ')}</strong>`;
+            }
+
+            const accomplices = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'accomplice');
+            if (accomplices.length > 0) {
+                resultsHTML += `<br/>Cómplice(s): <strong>Jugador ${accomplices.map(p => p.playerNum).join(', ')}</strong>`;
+            }
+
+            const clueless = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'clueless');
+            if (clueless.length > 0) {
+                resultsHTML += `<br/>Distraído(s): <strong>Jugador ${clueless.map(p => p.playerNum).join(', ')}</strong> (su palabra era: <strong>${clueless[0].word}</strong>)`;
+            }
+            
+            finalMessageEl.innerHTML = resultsHTML;
+            playAgainButton.textContent = 'Jugar de Nuevo';
         } else {
             showScreen(homeScreen);
+            document.getElementById('final-message').innerHTML = '¡Discutan quiénes son los impostores!';
+            playAgainButton.textContent = 'Revelar Roles';
             playerCountInput.value = 4;
             impostorCountInput.value = 1;
             players = [];
