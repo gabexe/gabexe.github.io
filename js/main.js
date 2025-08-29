@@ -243,6 +243,11 @@ document.addEventListener('DOMContentLoaded', () => {
             accomplicePlayers.forEach(accomplice => {
                 players[accomplice.index].impostorNumbers = impostorPlayerNumbers;
             });
+
+            const accomplicePlayerNumbers = accomplicePlayers.map(p => p.index + 1);
+            impostorPlayers.forEach(impostor => {
+                players[impostor.index].accompliceNumbers = accomplicePlayerNumbers;
+            });
         }
 
         currentPlayerIndex = 0;
@@ -267,6 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 let content = 'Impostor';
                 if (showImpostorCategoryCheckbox.checked) {
                     content += `<br/><span class="text-sm font-light">(${currentCategory})</span>`;
+                }
+                if (player.accompliceNumbers && player.accompliceNumbers.length > 0) {
+                    const accompliceNumbers = player.accompliceNumbers;
+                    if (accompliceNumbers.length > 1) {
+                        content += `<br/><span class="text-sm font-light">Tus cómplices son los jugadores: ${accompliceNumbers.join(', ')}</span>`;
+                    } else {
+                        content += `<br/><span class="text-sm font-light">El jugador ${accompliceNumbers[0]} es tu cómplice</span>`;
+                    }
                 }
                 cardBack.innerHTML = `<p class="word">${content}</p>`;
                 cardBack.classList.remove('green-border');
