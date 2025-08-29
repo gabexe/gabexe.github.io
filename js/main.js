@@ -43,19 +43,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- FUNCIONES ---
 
     function showScreen(screen) {
-        const gameContainer = document.getElementById('game-container');
         homeScreen.classList.add('hidden');
         optionsScreen.classList.add('hidden');
         gameScreen.classList.add('hidden');
         endScreen.classList.add('hidden');
         howToPlayScreen.classList.add('hidden');
-        
-/*         if (screen === optionsScreen || screen === howToPlayScreen) {
-            gameContainer.classList.add('fullscreen-container');
-        } else {
-            gameContainer.classList.remove('fullscreen-container');
-        } */
-
         screen.classList.remove('hidden');
     }
 
@@ -82,8 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (category.toLowerCase() === 'lol') {
                 checkbox.checked = false;
-                checkbox.disabled = true; // Deshabilitado por defecto
-                label.classList.add('opacity-50'); // Estilo visual para deshabilitado
+                checkbox.disabled = true;
+                label.classList.add('opacity-50');
             } else {
                 checkbox.checked = true;
             }
@@ -94,49 +86,103 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- LÓGICA DE GUARDADO Y CARGA ---
+
+    const SETTINGS_KEYS = {
+        PLAYER_COUNT: 'impostor_playerCount',
+        IMPOSTOR_COUNT: 'impostor_impostorCount',
+        SHOW_IMPOSTOR_CATEGORY: 'impostor_showImpostorCategory',
+        ACCOMPLICE_ENABLED: 'impostor_accompliceEnabled',
+        CLUELESS_ENABLED: 'impostor_cluelessEnabled',
+        SPECIAL_ROLE_PROB: 'impostor_specialRoleProb',
+        ENABLED_CATEGORIES: 'impostor_enabledCategories'
+    };
+
+    function saveSettings() {
+        localStorage.setItem(SETTINGS_KEYS.PLAYER_COUNT, playerCountInput.value);
+        localStorage.setItem(SETTINGS_KEYS.IMPOSTOR_COUNT, impostorCountInput.value);
+        localStorage.setItem(SETTINGS_KEYS.SHOW_IMPOSTOR_CATEGORY, showImpostorCategoryCheckbox.checked);
+        localStorage.setItem(SETTINGS_KEYS.ACCOMPLICE_ENABLED, accompliceToggle.checked);
+        localStorage.setItem(SETTINGS_KEYS.CLUELESS_ENABLED, cluelessToggle.checked);
+        localStorage.setItem(SETTINGS_KEYS.SPECIAL_ROLE_PROB, specialRoleProbability.value);
+
+        const enabledCategories = Array.from(categoryList.querySelectorAll('input[type="checkbox"]'))
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
+        localStorage.setItem(SETTINGS_KEYS.ENABLED_CATEGORIES, JSON.stringify(enabledCategories));
+    }
+
+    function loadSettings() {
+        const playerCount = localStorage.getItem(SETTINGS_KEYS.PLAYER_COUNT);
+        if (playerCount) playerCountInput.value = playerCount;
+
+        const impostorCount = localStorage.getItem(SETTINGS_KEYS.IMPOSTOR_COUNT);
+        if (impostorCount) impostorCountInput.value = impostorCount;
+
+        const showImpostorCategory = localStorage.getItem(SETTINGS_KEYS.SHOW_IMPOSTOR_CATEGORY);
+        if (showImpostorCategory !== null) showImpostorCategoryCheckbox.checked = (showImpostorCategory === 'true');
+
+        const accompliceEnabled = localStorage.getItem(SETTINGS_KEYS.ACCOMPLICE_ENABLED);
+        if (accompliceEnabled !== null) accompliceToggle.checked = (accompliceEnabled === 'true');
+
+        const cluelessEnabled = localStorage.getItem(SETTINGS_KEYS.CLUELESS_ENABLED);
+        if (cluelessEnabled !== null) cluelessToggle.checked = (cluelessEnabled === 'true');
+
+        const specialRoleProb = localStorage.getItem(SETTINGS_KEYS.SPECIAL_ROLE_PROB);
+        if (specialRoleProb) {
+            specialRoleProbability.value = specialRoleProb;
+            specialRoleProbabilityValue.textContent = specialRoleProb;
+        }
+
+        const enabledCategoriesJSON = localStorage.getItem(SETTINGS_KEYS.ENABLED_CATEGORIES);
+        if (enabledCategoriesJSON) {
+            try {
+                const enabledCategories = JSON.parse(enabledCategoriesJSON);
+                Array.from(categoryList.querySelectorAll('input[type="checkbox"]')).forEach(cb => {
+                    // No marcar 'lol' por defecto, solo si está explícitamente en las categorías guardadas
+                    if (cb.value.toLowerCase() !== 'lol') {
+                        cb.checked = enabledCategories.includes(cb.value);
+                    }
+                });
+            } catch (e) {
+                console.error("Error parsing enabled categories from localStorage", e);
+            }
+        }
+    }
+
     // --- LÓGICA DE NAVEGACIÓN Y EVENTOS ---
 
-    howToPlayButtonHome.addEventListener('click', () => {
-        showScreen(howToPlayScreen);
-    });
-
-    backButtonHowToPlay.addEventListener('click', () => {
-        showScreen(homeScreen);
-    });
+    howToPlayButtonHome.addEventListener('click', () => showScreen(howToPlayScreen));
+    backButtonHowToPlay.addEventListener('click', () => showScreen(homeScreen));
+    backButtonOptions.addEventListener('click', () => showScreen(homeScreen));
+    closeMessageButton.addEventListener('click', () => messageBox.classList.add('hidden'));
 
     specialRoleProbability.addEventListener('input', (e) => {
         specialRoleProbabilityValue.textContent = e.target.value;
+        saveSettings();
     });
 
     optionsButtonHome.addEventListener('click', () => {
         showScreen(optionsScreen);
         backButtonOptions.textContent = 'Volver';
         categorySearch.value = '';
-
-        // Resetear estado de "lol"
+        
         const lolCheckbox = categoryList.querySelector('input[value="Lol"]');
-        if (lolCheckbox) {
+        if (lolCheckbox && !lolCheckbox.disabled) {
+            // Si el easter egg estaba activo, no lo reseteamos al entrar a opciones
+        } else if (lolCheckbox) {
             lolCheckbox.disabled = true;
             lolCheckbox.checked = false;
             lolCheckbox.nextElementSibling.classList.add('opacity-50');
         }
         
-        // Resetear visibilidad del filtro
         Array.from(categoryList.children).forEach(child => {
             child.classList.remove('hidden');
         });
     });
 
-    backButtonOptions.addEventListener('click', () => {
-        showScreen(homeScreen);
-    });
-
-    closeMessageButton.addEventListener('click', () => {
-        messageBox.classList.add('hidden');
-    });
-
     categorySearch.addEventListener('input', (e) => {
-        const searchTerm = e.target.value;
+        const searchTerm = e.target.value.toUpperCase();
         const lolCheckbox = categoryList.querySelector('input[value="Lol"]');
         const lolLabel = lolCheckbox.nextElementSibling;
 
@@ -144,21 +190,15 @@ document.addEventListener('DOMContentLoaded', () => {
             lolCheckbox.disabled = false;
             lolLabel.classList.remove('opacity-50');
             backButtonOptions.textContent = 'Volver :)';
-        } else {
-            // No lo deshabilita si ya se activó, solo resetea el botón
-            if (backButtonOptions.textContent === 'Volver :)') {
+        } else if (searchTerm === '') {
+             if (backButtonOptions.textContent === 'Volver :)') {
                  backButtonOptions.textContent = 'Volver';
             }
         }
 
-        const upperSearchTerm = searchTerm.toUpperCase();
         Array.from(categoryList.children).forEach(child => {
-            const categoryName = child.querySelector('label').textContent.toUpperCase();
-            if (categoryName.includes(upperSearchTerm)) {
-                child.classList.remove('hidden');
-            } else {
-                child.classList.add('hidden');
-            }
+            const categoryName = child.dataset.categoryName.toUpperCase();
+            child.classList.toggle('hidden', !categoryName.includes(searchTerm));
         });
     });
 
@@ -169,31 +209,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const useClueless = cluelessToggle.checked;
         const probability = parseInt(specialRoleProbability.value, 10);
 
-        let specialRolesCount = 0;
-        if (useAccomplice) specialRolesCount++;
-        if (useClueless) specialRolesCount++;
+        let specialRolesCount = (useAccomplice ? 1 : 0) + (useClueless ? 1 : 0);
 
         if (playerCount < 3 || playerCount > 100) {
             errorMessage.textContent = 'El número de jugadores debe ser entre 3 y 100.';
-            errorMessage.classList.remove('hidden');
-            return;
+            return errorMessage.classList.remove('hidden');
         }
         if (impostorCount < 1 || impostorCount > 100) {
             errorMessage.textContent = 'El número de impostores debe ser entre 1 y 100.';
-            errorMessage.classList.remove('hidden');
-            return;
+            return errorMessage.classList.remove('hidden');
         }
         if (impostorCount + specialRolesCount >= playerCount) {
             errorMessage.textContent = 'No hay suficientes jugadores para tantos roles.';
-            errorMessage.classList.remove('hidden');
-            return;
+            return errorMessage.classList.remove('hidden');
         }
 
         const selectedCategories = Array.from(categoryList.querySelectorAll('input:checked')).map(cb => cb.value);
         if (selectedCategories.length === 0) {
             errorMessage.textContent = 'Debes seleccionar al menos una categoría.';
-            errorMessage.classList.remove('hidden');
-            return;
+            return errorMessage.classList.remove('hidden');
         }
 
         errorMessage.classList.add('hidden');
@@ -206,14 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
         currentWord = availableWords[randomIndex];
         distraidoWord = availableWordsDistraido[randomIndex];
 
-        players = [];
-        for (let i = 0; i < playerCount; i++) {
-            players.push({ role: 'normal' });
-        }
+        players = Array(playerCount).fill(0).map(() => ({ role: 'normal' }));
 
         let availableIndices = Array.from(Array(playerCount).keys());
         
-        const impostorIndices = [];
         for (let i = 0; i < impostorCount; i++) {
             const randomIndex = Math.floor(Math.random() * availableIndices.length);
             const impostorIndex = availableIndices.splice(randomIndex, 1)[0];
@@ -268,41 +298,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const player = players[currentPlayerIndex];
             cardBack.innerHTML = '';
             
-            if (player.role === 'impostor') {
-                let content = 'Impostor';
-                if (showImpostorCategoryCheckbox.checked) {
-                    content += `<br/><span class="text-sm font-light">(${currentCategory})</span>`;
-                }
-                if (player.accompliceNumbers && player.accompliceNumbers.length > 0) {
-                    const accompliceNumbers = player.accompliceNumbers;
-                    if (accompliceNumbers.length > 1) {
-                        content += `<br/><span class="text-sm font-light">Tus cómplices son los jugadores: ${accompliceNumbers.join(', ')}</span>`;
-                    } else {
-                        content += `<br/><span class="text-sm font-light">El jugador ${accompliceNumbers[0]} es tu cómplice</span>`;
+            let content = '';
+            let cardClasses = ['word'];
+
+            switch (player.role) {
+                case 'impostor':
+                    content = 'Impostor';
+                    if (showImpostorCategoryCheckbox.checked) {
+                        content += `<br/><span class="text-sm font-light">(${currentCategory})</span>`;
                     }
-                }
-                cardBack.innerHTML = `<p class="word">${content}</p>`;
-                cardBack.classList.remove('green-border');
-                cardBack.classList.add('red-border');
-            } else if (player.role === 'accomplice') {
-                const impostorNumbers = player.impostorNumbers;
-                let message;
-                if (impostorNumbers.length > 1) {
-                    message = `Los jugadores ${impostorNumbers.join(', ')} son los impostores, ayúdalos a ganar`;
-                } else {
-                    message = `El jugador ${impostorNumbers[0]} es el impostor, ayúdalo a ganar`;
-                }
-                cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">${message}</p>`;
-                cardBack.classList.remove('red-border');
-                cardBack.classList.add('green-border');
-            } else if (player.role === 'clueless') {
-                cardBack.innerHTML = `<p class="word">${player.word}</p>`;
-                cardBack.classList.remove('red-border');
-                cardBack.classList.add('green-border');
-            } else { // normal
-                cardBack.innerHTML = `<p class="word">${currentWord}</p>`;
-                cardBack.classList.remove('red-border');
-                cardBack.classList.add('green-border');
+                    if (player.accompliceNumbers && player.accompliceNumbers.length > 0) {
+                        const accompliceText = player.accompliceNumbers.length > 1 ? `Tus cómplices son los jugadores: ${player.accompliceNumbers.join(', ')}` : `El jugador ${player.accompliceNumbers[0]} es tu cómplice`;
+                        content += `<br/><span class="text-sm font-light">${accompliceText}</span>`;
+                    }
+                    cardBack.classList.add('red-border');
+                    cardBack.classList.remove('green-border');
+                    break;
+                case 'accomplice':
+                    const impostorText = player.impostorNumbers.length > 1 ? `Los jugadores ${player.impostorNumbers.join(', ')} son los impostores, ayúdalos a ganar` : `El jugador ${player.impostorNumbers[0]} es el impostor, ayúdalo a ganar`;
+                    content = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">${impostorText}</p>`;
+                    cardBack.classList.add('green-border');
+                    cardBack.classList.remove('red-border');
+                    break;
+                case 'clueless':
+                    content = `<p class="word">${player.word}</p>`;
+                    cardBack.classList.add('green-border');
+                    cardBack.classList.remove('red-border');
+                    break;
+                default: // normal
+                    content = `<p class="word">${currentWord}</p>`;
+                    cardBack.classList.add('green-border');
+                    cardBack.classList.remove('red-border');
+            }
+
+            if (player.role !== 'accomplice') {
+                 cardBack.innerHTML = `<p class="${cardClasses.join(' ')}">${content}</p>`;
+            } else {
+                cardBack.innerHTML = content;
             }
             
             gameCard.classList.add('revealed');
@@ -320,20 +352,16 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let resultsHTML = `La palabra era: <strong>${currentWord}</strong>`;
 
-            const impostors = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'impostor');
-            if (impostors.length > 0) {
-                resultsHTML += `<br/>Impostor(es): <strong>Jugador ${impostors.map(p => p.playerNum).join(', ')}</strong>`;
-            }
+            const rolePlayers = (role) => players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === role);
 
-            const accomplices = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'accomplice');
-            if (accomplices.length > 0) {
-                resultsHTML += `<br/>Cómplice(s): <strong>Jugador ${accomplices.map(p => p.playerNum).join(', ')}</strong>`;
-            }
+            const impostors = rolePlayers('impostor');
+            if (impostors.length > 0) resultsHTML += `<br/>Impostor(es): <strong>Jugador ${impostors.map(p => p.playerNum).join(', ')}</strong>`;
 
-            const clueless = players.map((p, i) => ({...p, playerNum: i + 1})).filter(p => p.role === 'clueless');
-            if (clueless.length > 0) {
-                resultsHTML += `<br/>Distraído(s): <strong>Jugador ${clueless.map(p => p.playerNum).join(', ')}</strong> (su palabra era: <strong>${clueless[0].word}</strong>)`;
-            }
+            const accomplices = rolePlayers('accomplice');
+            if (accomplices.length > 0) resultsHTML += `<br/>Cómplice(s): <strong>Jugador ${accomplices.map(p => p.playerNum).join(', ')}</strong>`;
+
+            const clueless = rolePlayers('clueless');
+            if (clueless.length > 0) resultsHTML += `<br/>Distraído(s): <strong>Jugador ${clueless.map(p => p.playerNum).join(', ')}</strong> (su palabra era: <strong>${clueless[0].word}</strong>)`;
             
             finalMessageEl.innerHTML = resultsHTML;
             playAgainButton.textContent = 'Jugar de Nuevo';
@@ -341,12 +369,23 @@ document.addEventListener('DOMContentLoaded', () => {
             showScreen(homeScreen);
             document.getElementById('final-message').innerHTML = '¡Discutan quiénes son los impostores!';
             playAgainButton.textContent = 'Revelar Roles';
-            playerCountInput.value = 4;
-            impostorCountInput.value = 1;
             players = [];
         }
     });
 
     // --- INICIALIZACIÓN ---
     populateCategories();
+    loadSettings();
+
+    // Event listeners para guardar settings
+    playerCountInput.addEventListener('change', saveSettings);
+    impostorCountInput.addEventListener('change', saveSettings);
+    showImpostorCategoryCheckbox.addEventListener('change', saveSettings);
+    accompliceToggle.addEventListener('change', saveSettings);
+    cluelessToggle.addEventListener('change', saveSettings);
+    categoryList.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') {
+            saveSettings();
+        }
+    });
 });
