@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     optionsButtonHome.addEventListener('click', () => {
         showScreen(optionsScreen);
+        loadSettings(); // Cargar configuraciones al abrir la pantalla de opciones
         backButtonOptions.textContent = 'Volver';
         categorySearch.value = '';
         
@@ -172,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Si el easter egg estaba activo, no lo reseteamos al entrar a opciones
         } else if (lolCheckbox) {
             lolCheckbox.disabled = true;
-            lolCheckbox.checked = false;
+            // lolCheckbox.checked = false; // Dejar que loadSettings maneje el estado
             lolCheckbox.nextElementSibling.classList.add('opacity-50');
         }
         
