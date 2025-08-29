@@ -50,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
         endScreen.classList.add('hidden');
         howToPlayScreen.classList.add('hidden');
         
-        if (screen === optionsScreen || screen === howToPlayScreen) {
+/*         if (screen === optionsScreen || screen === howToPlayScreen) {
             gameContainer.classList.add('fullscreen-container');
         } else {
             gameContainer.classList.remove('fullscreen-container');
-        }
+        } */
 
         screen.classList.remove('hidden');
     }
