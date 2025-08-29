@@ -235,6 +235,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         players.sort(() => Math.random() - 0.5);
 
+        const impostorPlayers = players.map((p, i) => ({...p, index: i})).filter(p => p.role === 'impostor');
+        const accomplicePlayers = players.map((p, i) => ({...p, index: i})).filter(p => p.role === 'accomplice');
+
+        if (accomplicePlayers.length > 0 && impostorPlayers.length > 0) {
+            const impostorPlayerNumbers = impostorPlayers.map(p => p.index + 1);
+            accomplicePlayers.forEach(accomplice => {
+                players[accomplice.index].impostorNumbers = impostorPlayerNumbers;
+            });
+        }
+
         currentPlayerIndex = 0;
         showScreen(gameScreen);
         updateCard();
@@ -262,7 +272,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 cardBack.classList.remove('green-border');
                 cardBack.classList.add('red-border');
             } else if (player.role === 'accomplice') {
-                cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(Ayuda al impostor)</p>`;
+                const impostorNumbers = player.impostorNumbers;
+                let message;
+                if (impostorNumbers.length > 1) {
+                    message = `Los jugadores ${impostorNumbers.join(', ')} son los impostores, ayúdalos a ganar`;
+                } else {
+                    message = `El jugador ${impostorNumbers[0]} es el impostor, ayúdalo a ganar`;
+                }
+                cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">${message}</p>`;
                 cardBack.classList.remove('red-border');
                 cardBack.classList.add('green-border');
             } else if (player.role === 'clueless') {
