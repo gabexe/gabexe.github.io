@@ -6,3 +6,6 @@ Luego, todos discuten y, basándose en la conversación, los jugadores normales 
 
 * "Cómplice": Un jugador que sabe quién es el impostor y cuyo objetivo es ayudarlo a no ser descubierto.
 * "Distraído": Un jugador que recibe una palabra ligeramente diferente a la de los demás (por ejemplo, "Naranja" en lugar de "Mandarina"), lo que podría llevar a que lo confundan con un impostor.
+
+To-do
+- [] Arreglar opciones que no se guardan: (numero de jugadores e impostores)
