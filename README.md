@@ -28,6 +28,3 @@ Luego, todos discuten y, basándose en la conversación, los jugadores inocentes
 *   `js/main.js`: El núcleo de la aplicación. Maneja la lógica del juego, los turnos, la asignación de roles y las actualizaciones de la interfaz.
 *   `js/fireflies.js`: Script para generar un fondo animado de luciérnagas.
 *   `README.md`: Este archivo.
-
-## To-do ✅
-- [ ] Arreglar opciones que no se guardan: (numero de jugadores e impostores)
