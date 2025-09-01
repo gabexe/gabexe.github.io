@@ -241,10 +241,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
         currentCategory = randomCategory;
         const availableWords = wordsDB[randomCategory];
-        const availableWordsDistraido = wordsDB_distraido[randomCategory];
         const randomIndex = Math.floor(Math.random() * availableWords.length);
-        currentWord = availableWords[randomIndex];
-        distraidoWord = availableWordsDistraido[randomIndex];
+        const wordPair = availableWords[randomIndex];
+        currentWord = wordPair.normal;
+        distraidoWord = wordPair.distraido;
 
         players = Array(playerCount).fill(0).map(() => ({ role: 'normal' }));
 
