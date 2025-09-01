@@ -220,6 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessage.textContent = 'El número de impostores debe ser entre 1 y 100.';
             return errorMessage.classList.remove('hidden');
         }
+        if (impostorCount >= playerCount) {
+            errorMessage.textContent = 'No puede haber más o igual cantidad de impostores que de jugadores.';
+            return errorMessage.classList.remove('hidden');
+        }
+
         if (impostorCount + specialRolesCount >= playerCount) {
             errorMessage.textContent = 'No hay suficientes jugadores para tantos roles.';
             return errorMessage.classList.remove('hidden');
