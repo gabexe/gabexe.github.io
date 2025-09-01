@@ -317,30 +317,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         const accompliceText = player.accompliceNumbers.length > 1 ? `Tus cómplices son los jugadores: ${player.accompliceNumbers.join(', ')}` : `El jugador ${player.accompliceNumbers[0]} es tu cómplice`;
                         content += `<br/><span class="text-sm font-light">${accompliceText}</span>`;
                     }
+                    cardBack.innerHTML = `<p class="${cardClasses.join(' ')}">${content}</p>`;
                     cardBack.classList.add('red-border');
                     cardBack.classList.remove('green-border');
                     break;
                 case 'accomplice':
                     const impostorText = player.impostorNumbers.length > 1 ? `Los jugadores ${player.impostorNumbers.join(', ')} son los impostores, ayúdalos a ganar` : `El jugador ${player.impostorNumbers[0]} es el impostor, ayúdalo a ganar`;
-                    content = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">${impostorText}</p>`;
+                    cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(${currentCategory})</p><p class="text-sm font-light mt-2">${impostorText}</p>`;
                     cardBack.classList.add('green-border');
                     cardBack.classList.remove('red-border');
                     break;
                 case 'clueless':
-                    content = `<p class="word">${player.word}</p>`;
+                    cardBack.innerHTML = `<p class="word">${player.word}</p><p class="text-sm font-light mt-2">(${currentCategory})</p>`;
                     cardBack.classList.add('green-border');
                     cardBack.classList.remove('red-border');
                     break;
                 default: // normal
-                    content = `<p class="word">${currentWord}</p>`;
+                    cardBack.innerHTML = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(${currentCategory})</p>`;
                     cardBack.classList.add('green-border');
                     cardBack.classList.remove('red-border');
-            }
-
-            if (player.role !== 'accomplice') {
-                 cardBack.innerHTML = `<p class="${cardClasses.join(' ')}">${content}</p>`;
-            } else {
-                cardBack.innerHTML = content;
             }
             
             gameCard.classList.add('revealed');
@@ -349,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCard() {
         gameCard.classList.remove('revealed');
-        playerTurnText.innerHTML = `Jugador ${currentPlayerIndex + 1} <span class="text-gray-500">- ${currentCategory}</span>`;
+        playerTurnText.innerHTML = `Jugador ${currentPlayerIndex + 1}`;
     }
 
     playAgainButton.addEventListener('click', () => {
