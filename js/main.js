@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 'impostor':
                     let impostorContent = 'Impostor';
                     if (showImpostorCategoryCheckbox.checked) {
-                        impostorContent += `<br/><span class="text-sm font-light">(${currentCategory})</span>`;
+                        impostorContent += `<br/><span class="text-sm font-light">(Categoria ${currentCategory})</span>`;
                     }
                     if (player.accompliceNumbers && player.accompliceNumbers.length > 0) {
                         const accompliceText = player.accompliceNumbers.length > 1 ? `Tus cómplices son los jugadores: ${player.accompliceNumbers.join(', ')}` : `El jugador ${player.accompliceNumbers[0]} es tu cómplice`;
@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (currentCategory === 'Cine') {
                         accompliceContent = `<p class="word">${currentWord.title}</p><p class="word-translation">${currentWord.translation}</p>`;
                     } else {
-                        accompliceContent = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(${currentCategory})</p>`;
+                        accompliceContent = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(Categoria ${currentCategory})</p>`;
                     }
                     accompliceContent += `<p class="text-sm font-light mt-2">${impostorText}</p>`;
                     cardBack.innerHTML = accompliceContent;
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (currentCategory === 'Cine') {
                         cluelessContent = `<p class="word">${player.word.title}</p><p class="word-translation">${player.word.translation}</p>`;
                     } else {
-                        cluelessContent = `<p class="word">${player.word}</p><p class="text-sm font-light mt-2">(${currentCategory})</p>`;
+                        cluelessContent = `<p class="word">${player.word}</p><p class="text-sm font-light mt-2">(Categoria ${currentCategory})</p>`;
                     }
                     cardBack.innerHTML = cluelessContent;
                     cardBack.classList.add('green-border');
@@ -347,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (currentCategory === 'Cine') {
                         normalContent = `<p class="word">${currentWord.title}</p><p class="word-translation">${currentWord.translation}</p>`;
                     } else {
-                        normalContent = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(${currentCategory})</p>`;
+                        normalContent = `<p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(Categoria ${currentCategory})</p>`;
                     }
                     cardBack.innerHTML = normalContent;
                     cardBack.classList.add('green-border');
