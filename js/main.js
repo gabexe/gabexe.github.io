@@ -14,10 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const playerCountInput = document.getElementById('player-count');
     const impostorCountInput = document.getElementById('impostor-count');
     const showImpostorCategoryCheckbox = document.getElementById('show-impostor-category');
-    const errorMessage = document.getElementById('error-message');
 
     const accompliceToggle = document.getElementById('accomplice-toggle');
     const cluelessToggle = document.getElementById('clueless-toggle');
+    const jokerToggle = document.getElementById('joker-toggle');
     const specialRoleProbability = document.getElementById('special-role-probability');
     const specialRoleProbabilityValue = document.getElementById('special-role-probability-value');
 
@@ -86,6 +86,48 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function createRipple(event) {
+        const button = event.currentTarget;
+        const circle = document.createElement("span");
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+        circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+        circle.classList.add("ripple");
+
+        const ripple = button.getElementsByClassName("ripple")[0];
+
+        if (ripple) {
+            ripple.remove();
+        }
+
+        button.appendChild(circle);
+    }
+
+    function showToast(message) {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 100);
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                if (toast.parentNode === toastContainer) {
+                    toastContainer.removeChild(toast);
+                }
+            }, 500);
+        }, 1000);
+    }
+
     // --- LÓGICA DE GUARDADO Y CARGA ---
 
     const SETTINGS_KEYS = {
@@ -94,6 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         SHOW_IMPOSTOR_CATEGORY: 'impostor_showImpostorCategory',
         ACCOMPLICE_ENABLED: 'impostor_accompliceEnabled',
         CLUELESS_ENABLED: 'impostor_cluelessEnabled',
+        JOKER_ENABLED: 'impostor_jokerEnabled',
         SPECIAL_ROLE_PROB: 'impostor_specialRoleProb',
         ENABLED_CATEGORIES: 'impostor_enabledCategories'
     };
@@ -104,6 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(SETTINGS_KEYS.SHOW_IMPOSTOR_CATEGORY, showImpostorCategoryCheckbox.checked);
         localStorage.setItem(SETTINGS_KEYS.ACCOMPLICE_ENABLED, accompliceToggle.checked);
         localStorage.setItem(SETTINGS_KEYS.CLUELESS_ENABLED, cluelessToggle.checked);
+        localStorage.setItem(SETTINGS_KEYS.JOKER_ENABLED, jokerToggle.checked);
         localStorage.setItem(SETTINGS_KEYS.SPECIAL_ROLE_PROB, specialRoleProbability.value);
 
         const enabledCategories = Array.from(categoryList.querySelectorAll('input[type="checkbox"]'))
@@ -127,6 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const cluelessEnabled = localStorage.getItem(SETTINGS_KEYS.CLUELESS_ENABLED);
         if (cluelessEnabled !== null) cluelessToggle.checked = (cluelessEnabled === 'true');
+
+        const jokerEnabled = localStorage.getItem(SETTINGS_KEYS.JOKER_ENABLED);
+        if (jokerEnabled !== null) jokerToggle.checked = (jokerEnabled === 'true');
 
         const specialRoleProb = localStorage.getItem(SETTINGS_KEYS.SPECIAL_ROLE_PROB);
         if (specialRoleProb) {
@@ -208,35 +255,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const impostorCount = parseInt(impostorCountInput.value, 10);
         const useAccomplice = accompliceToggle.checked;
         const useClueless = cluelessToggle.checked;
+        const useJoker = jokerToggle.checked;
         const probability = parseInt(specialRoleProbability.value, 10);
 
-        let specialRolesCount = (useAccomplice ? 1 : 0) + (useClueless ? 1 : 0);
+        let specialRolesCount = (useAccomplice ? 1 : 0) + (useClueless ? 1 : 0) + (useJoker ? 1 : 0);
 
         if (playerCount < 3 || playerCount > 100) {
-            errorMessage.textContent = 'El número de jugadores debe ser entre 3 y 100.';
-            return errorMessage.classList.remove('hidden');
+            return showToast('Jugadores: 3-100');
         }
         if (impostorCount < 1 || impostorCount > 100) {
-            errorMessage.textContent = 'El número de impostores debe ser entre 1 y 100.';
-            return errorMessage.classList.remove('hidden');
+            return showToast('Impostores: 1-100');
         }
         if (impostorCount >= playerCount) {
-            errorMessage.textContent = 'No puede haber más o igual cantidad de impostores que de jugadores.';
-            return errorMessage.classList.remove('hidden');
+            return showToast('Más impostores que jugadores');
         }
 
         if (impostorCount + specialRolesCount >= playerCount) {
-            errorMessage.textContent = 'No hay suficientes jugadores para tantos roles.';
-            return errorMessage.classList.remove('hidden');
+            return showToast('No hay suficientes jugadores');
         }
 
         const selectedCategories = Array.from(categoryList.querySelectorAll('input:checked')).map(cb => cb.value);
         if (selectedCategories.length === 0) {
-            errorMessage.textContent = 'Debes seleccionar al menos una categoría.';
-            return errorMessage.classList.remove('hidden');
+            return showToast('Selecciona una categoría');
         }
-
-        errorMessage.classList.add('hidden');
 
         const randomCategory = selectedCategories[Math.floor(Math.random() * selectedCategories.length)];
         currentCategory = randomCategory;
@@ -267,6 +308,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const cluelessIndex = availableIndices.splice(randomIndex, 1)[0];
             players[cluelessIndex].role = 'clueless';
             players[cluelessIndex].word = distraidoWord;
+        }
+
+        if (useJoker && Math.random() * 100 < probability) {
+            const randomIndex = Math.floor(Math.random() * availableIndices.length);
+            const jokerIndex = availableIndices.splice(randomIndex, 1)[0];
+            players[jokerIndex].role = 'joker';
         }
 
         players.sort(() => Math.random() - 0.5);
@@ -328,8 +375,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     accompliceContent += `<p class="text-sm font-light mt-2">${impostorText}</p>`;
                     cardBack.innerHTML = accompliceContent;
-                    cardBack.classList.add('green-border');
-                    cardBack.classList.remove('red-border');
+                    cardBack.classList.add('red-border');
+                    cardBack.classList.remove('green-border');
+                    break;
+                case 'joker':
+                    cardBack.innerHTML = `<p class="word">Joker</p><p class="text-sm font-light mt-2">(Tu objetivo es ser eliminado)</p><p class="word">${currentWord}</p><p class="text-sm font-light mt-2">(Categoria ${currentCategory})</p>`;
+                    cardBack.classList.add('purple-border');
+                    cardBack.classList.remove('red-border', 'green-border');
                     break;
                 case 'clueless':
                     let cluelessContent;
@@ -383,6 +435,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 const cluelessWordToDisplay = currentCategory === 'Cine' ? clueless[0].word.title : clueless[0].word;
                 resultsHTML += `<br/>Distraído(s): <strong>Jugador ${clueless.map(p => p.playerNum).join(', ')}</strong> (su palabra era: <strong>${cluelessWordToDisplay}</strong>)`;
             }
+
+            const joker = rolePlayers('joker');
+            if (joker.length > 0) {
+                resultsHTML += `<br/>Joker: <strong>Jugador ${joker.map(p => p.playerNum).join(', ')}</strong>`;
+            }
             
             finalMessageEl.innerHTML = resultsHTML;
             playAgainButton.textContent = 'Jugar de Nuevo';
@@ -404,9 +461,15 @@ document.addEventListener('DOMContentLoaded', () => {
     showImpostorCategoryCheckbox.addEventListener('change', saveSettings);
     accompliceToggle.addEventListener('change', saveSettings);
     cluelessToggle.addEventListener('change', saveSettings);
+    jokerToggle.addEventListener('change', saveSettings);
     categoryList.addEventListener('change', (e) => {
         if (e.target.type === 'checkbox') {
             saveSettings();
         }
+    });
+
+    const buttons = document.querySelectorAll(".btn-monochrome");
+    buttons.forEach(button => {
+        button.addEventListener("click", createRipple);
     });
 });

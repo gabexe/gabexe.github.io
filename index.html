@@ -55,6 +55,10 @@
                             <label for="clueless-toggle" class="text-sm font-medium text-gray-300">Distraído (beta)</label>
                             <input type="checkbox" id="clueless-toggle" class="form-checkbox h-5 w-5 text-gray-600">
                         </div>
+                        <div class="flex items-center justify-between max-w-xs mx-auto">
+                            <label for="joker-toggle" class="text-sm font-medium text-gray-300">Joker</label>
+                            <input type="checkbox" id="joker-toggle" class="form-checkbox h-5 w-5 text-gray-600">
+                        </div>
                     </div>
                 </div>
 
@@ -73,7 +77,6 @@
 
             </div>
             <button id="back-button-options" class="btn-monochrome px-6 py-3 md:px-8 md:py-4 rounded-full text-base md:text-lg font-bold">Volver</button>
-            <p id="error-message" class="text-red-500 mt-4 text-sm font-semibold hidden"></p>
         </div>
 
         <div id="game-screen" class="text-center hidden transition-opacity duration-500 ease-in-out">
@@ -122,6 +125,9 @@
                         <li>
                             <strong class="text-white">Distraído (Opcional):</strong> Tienes una palabra diferente. No sabes que eres distraído.
                         </li>
+                        <li>
+                            <strong class="text-white">Joker (Opcional):</strong> Conoce la palabra. Gana si consigue que lo eliminen en la primera ronda.
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -135,5 +141,7 @@
     
     <script src="js/main.js"></script>
     <script src="js/fireflies.js"></script>
+
+    <div id="toast-container" class="fixed bottom-5 right-5 space-y-2 z-50"></div>
 </body>
 </html>
