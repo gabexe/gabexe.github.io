@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Metadatos básicos -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Currículum vitae de Guillermo Gabriel Giménez - Desarrollador Web especializado en React, JavaScript y diseño moderno.">
+    <meta name="author" content="Guillermo Gabriel Giménez">
+    <meta name="keywords" content="desarrollador web, React, JavaScript, Tailwind CSS, portfolio">
+    
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="Guillermo G. - Desarrollador Web">
+    <meta property="og:description" content="Desarrollador Web especializado en React y JavaScript">
+    <meta property="og:type" content="website">
+    
+    <title>Guillermo G.</title>
+    
+  <!-- Estilos -->
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-3">
+  <!-- Contenedor principal del CV -->
+  <main class="cv-container" role="main" aria-label="Currículum Vitae de Guillermo Gabriel Giménez">
+    
+    <!-- Sección combinada: encabezado y perfil profesional -->
+    <section class="cv-section profile-section" aria-labelledby="profile-heading">
+      <div class="cv-header" role="banner">
+        <h1 class="cv-title">Guillermo Gabriel Giménez</h1>
+        <span class="section-ref" aria-label="Referencia de sección 1">[1]</span>
+      </div>
+      <div style="height: var(--spacing-lg);"></div>
+      <div class="section-content">
+        <p class="profile-text" id="profile-heading">Estudiante de Ingeniería Informática (UBP, Córdoba). Especializado en desarrollo web full-stack. Experiencia práctica en React, JavaScript, bases de datos y sistemas distribuidos.
+        <br></br>
+        Actualmente desarrollando proyectos propios como método de aprendizaje práctico.</p>
+      </div>
+      <p class="location-text">Córdoba, Argentina.</p>
+    </section>
+
+    <!-- Divisor visual -->
+    <hr class="cv-divider" aria-hidden="true">
+
+    <!-- Sección de contacto, habilidades y educación -->
+    <section class="cv-grid" aria-label="Información profesional">
+      
+      <!-- Columna de contacto e idiomas -->
+      <div class="cv-column">
+        <div class="column-header">
+          <h3 class="column-title" id="contact-heading">CONTACTO</h3>
+          <span class="section-ref" aria-label="Referencia de sección 2">[2]</span>
+        </div>
+        
+        <!-- Lista de enlaces de contacto -->
+        <ul class="link-list" role="list" aria-labelledby="contact-heading">
+          <li>
+            <a href="mailto:guillermo.it@proton.me" class="cv-link" aria-label="Enviar correo electrónico">
+              <span class="link-label">▪ Mail</span>
+              <span class="link-icon" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://linkedin.com/in/gillermogimenez" target="_blank" rel="noopener noreferrer" class="cv-link" aria-label="Ver perfil de LinkedIn (se abre en nueva pestaña)">
+              <span class="link-label">▪ LinkedIn</span>
+              <span class="link-icon" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://github.com/gabexe" target="_blank" rel="noopener noreferrer" class="cv-link" aria-label="Ver perfil de GitHub (se abre en nueva pestaña)">
+              <span class="link-label">▪ GitHub</span>
+              <span class="link-icon" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+        
+        <!-- Subsección de idiomas -->
+        <div class="subsection">
+          <h3 class="subsection-title">IDIOMAS</h3>
+          <ul class="language-list" role="list">
+          <li class="language-item language"><span class="lang-bullet">▪</span><span class="lang-name">Español</span><span class="lang-level">Nativo</span></li>
+          <li class="language-item language"><span class="lang-bullet">▪</span><span class="lang-name">Inglés</span><span class="lang-level">Conversacional</span></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Columna de habilidades -->
+      <div class="cv-column">
+        <div class="column-header">
+          <h3 class="column-title" id="skills-heading">HABILIDADES</h3>
+          <span class="section-ref" aria-label="Referencia de sección 3">[3]</span>
+        </div>
+        <ul class="skills-list" role="list" aria-labelledby="skills-heading">
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> React, JavaScript</li>
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Tailwind CSS</li>
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Java, C++</li>
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Photoshop</li>
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Git & GitHub</li>
+          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> IA & Automatización</li>
+        </ul>
+      </div>
+      
+      <!-- Columna de educación -->
+      <div class="cv-column">
+        <div class="column-header">
+          <h3 class="column-title" id="education-heading">EDUCACIÓN</h3>
+          <span class="section-ref" aria-label="Referencia de sección 4">[4]</span>
+        </div>
+        
+        <!-- Lista de estudios -->
+        <div class="education-list" aria-labelledby="education-heading">
+          <article class="education-item">
+            <h3 class="education-title">▪ Ingeniería Informática</h3>
+            <p class="education-institution">Universidad Blas Pascal</p>
+            <time class="education-period" datetime="2025/2026">2025 – 2026</time>
+          </article>
+          
+          <article class="education-item">
+            <h3 class="education-title">▪ Téc. Superior en Informática</h3>
+            <p class="education-institution">IDES Instituto de Enseñanza Superior</p>
+            <time class="education-period" datetime="2021/2024">2021 – 2024</time>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Divisor visual -->
+    <hr class="cv-divider" aria-hidden="true">
+
+    <!-- Sección de proyectos -->
+    <section class="cv-section projects-section" aria-labelledby="projects-heading">
+      <div class="column-header">
+        <h3 class="column-title" id="projects-heading">PROYECTOS</h3>
+        <span class="section-ref" aria-label="Referencia de sección 5">[5]</span>
+      </div>
+      
+      <!-- Lista de proyectos con enlaces -->
+      <ul class="projects-list" role="list" aria-labelledby="projects-heading">
+        <li>
+          <a href="https://gabexe.github.io/impostor" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Ver proyecto Impostor - Juego (se abre en nueva pestaña)">
+            <span class="project-name">
+              <span class="project-number">¹</span> Impostor 
+              <span class="project-tag">( Game )</span>
+            </span>
+            <span class="link-icon" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://gabexe.github.io/desconectados" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Ver proyecto En palabras - Juego (se abre en nueva pestaña)">
+            <span class="project-name">
+              <span class="project-number">²</span> En palabras 
+              <span class="project-tag">( Game )</span>
+            </span>
+            <span class="link-icon" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/gabexe/momentum" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Ver proyecto Momentum - En proceso (se abre en nueva pestaña)">
+            <span class="project-name">
+              <span class="project-number">³</span> Momentum 
+              <span class="project-tag">( En proceso )</span>
+            </span>
+            <span class="link-icon" aria-hidden="true">↗</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+    
+  </main>
+</body>
+</html>

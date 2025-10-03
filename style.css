@@ -1,0 +1,469 @@
+@font-face {
+    font-family: 'Marist Book';
+    src: url('./fonts/ABCMarist-Book-Trial.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* ========== VARIABLES ========== */
+:root {
+    /* Paleta de colores */
+    --color-background: #FAF9F6;
+    --color-foreground: #0a0a0a;
+    --color-muted-foreground: #737373;
+    --color-primary: #171717;
+    
+    /* Sistema tipográfico */
+    --font-family-base: 'Marist Book', serif;
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-content: 0.80rem; /* 13px */
+    --font-size-title: 1rem;      /* 16px */
+    --line-height-base: 1.15;
+    
+    /* Pesos de fuente */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    
+    /* Espaciado */
+    --spacing-xs: 0.125rem;  /* 2px */
+    --spacing-sm: 0.25rem;   /* 4px */
+    --spacing-md: 0.5rem;    /* 8px */
+    --spacing-lg: 1rem;      /* 16px */
+    --spacing-xl: 2rem;      /* 32px */
+    
+    /* Anchos máximos */
+    --max-width-content: 42rem;
+}
+
+/* ========== ESTILOS BASE Y RESET ========== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-content);
+    line-height: var(--line-height-base);
+    color: var(--color-foreground);
+    background-color: var(--color-background);
+    /* Optimización de renderizado de fuentes */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Reset básico */
+h1, h2, h3, h4, h5, h6, ul, ol, p {
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: var(--font-weight-medium);
+}
+
+ul, ol {
+    padding: 0;
+    list-style: none;
+}
+
+    /* Reset de enlaces */
+a {
+    color: inherit;
+    text-decoration: none;
+    cursor: default;
+    transition: color 0.2s cubic-bezier(.4,0,.2,1), text-shadow 0.2s cubic-bezier(.4,0,.2,1);
+}
+
+a:hover, a:focus-visible {
+    color: #737373;
+    text-shadow: 0 1px 6px rgba(115,115,115,0.18);
+    outline: none;
+}
+
+/* ========== COMPONENTES PRINCIPALES ========== */
+
+/* Contenedor principal del CV */
+.cv-container {
+    width: 100%;
+    max-width: var(--max-width-content);
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+/* Encabezado del CV */
+.cv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+}
+
+.cv-title {
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: -0.025em;
+    color: var(--color-foreground);
+}
+
+/* Referencias de sección */
+.section-ref {
+    flex-shrink: 0;
+    min-width: 2.5rem;
+    padding-left: var(--spacing-lg);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.1em;
+    text-align: right;
+    color: var(--color-foreground);
+    line-height: 0.8rem;
+}
+
+/* ========== SECCIONES ========== */
+
+.cv-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+}
+
+.section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Sección de perfil */
+.profile-text {
+    font-size: var(--font-size-content);
+    line-height: var(--line-height-base);
+    color: var(--color-foreground);
+    text-align: justify;
+}
+
+.location-text {
+    font-size: var(--font-size-content);
+    color: var(--color-muted-foreground);
+}
+
+/* ========== DIVISORES ========== */
+
+.cv-divider {
+    width: 100%;
+    height: 1px;
+    margin: -1rem 0;
+    border: none;
+    background-color: #e0e0e0;
+}
+
+/* ========== GRID DE COLUMNAS ========== */
+
+.cv-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+}
+
+/* Diseño responsive para el grid */
+.cv-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-base);
+}
+
+/* Responsive: 3 columnas en pantallas medianas */
+@media (min-width: 640px) {
+    .cv-grid {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+.cv-column {
+    flex: 1;
+    min-width: 0; /* Permite que el flex item se encoja */
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-sm);
+}
+
+.column-title {
+    font-size: var(--font-size-content);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-foreground);
+}
+
+/* ========== LISTAS DE ENLACES ========== */
+
+.link-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.cv-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.link-label {
+    display: inline-block;
+    min-width: 70px;
+}
+
+.link-icon {
+    font-size: var(--font-size-content);
+}
+
+/* ========== SUBSECCIÓN DE IDIOMAS ========== */
+
+.subsection {
+    margin-top: 1.1rem;
+}
+
+.subsection-title {
+    font-size: var(--font-size-content);
+    font-weight: var(--font-weight-normal);
+    letter-spacing: normal;
+    text-transform: none;
+    color: var(--color-foreground);
+    margin-bottom: var(--spacing-xs);
+}
+
+.language-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.language-item {
+    font-size: var(--font-size-xs);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    color: var(--color-foreground);
+}
+
+.lang-bullet {
+    margin-right: 0.4em;
+    flex-shrink: 0;
+}
+
+.lang-name {
+    flex: 1 1 auto;
+    min-width: 4.5ch;
+    text-align: left;
+    font-weight: var(--font-weight-medium);
+}
+
+.lang-level {
+    flex-shrink: 0;
+    color: var(--color-muted-foreground);
+    text-align: right;
+    min-width: 6ch;
+}
+
+
+/* ========== HABILIDADES ========== */
+
+.skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.skill-item {
+    font-size: var(--font-size-xs);
+}
+
+.skill-bullet {
+    margin-right: var(--spacing-xs);
+    color: var(--color-primary);
+}
+
+/* ========== EDUCACIÓN ========== */
+
+.education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.education-item {
+    margin: 0;
+}
+
+.education-title {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-foreground);
+    margin-bottom: 2px;
+}
+
+.education-institution {
+    font-size: var(--font-size-xs);
+    color: var(--color-muted-foreground);
+    margin: 0;
+}
+
+.education-period {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-normal);
+    color: var(--color-muted-foreground);
+    margin-top: 2px;
+}
+
+/* ========== PROYECTOS ========== */
+
+.projects-section {
+    font-size: var(--font-size-content);
+    line-height: var(--line-height-base);
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    line-height: var(--line-height-base);
+}
+
+.project-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.project-name {
+    display: inline-block;
+    min-width: 120px;
+}
+
+.project-number {
+    font-weight: var(--font-weight-medium);
+}
+
+.project-tag {
+    color: var(--color-muted-foreground);
+}
+
+/* ========== ANIMACIONES ========== */
+
+@keyframes blurFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+
+.cv-container > * {
+    opacity: 0;
+    animation: blurFadeIn 0.8s ease-out forwards;
+}
+
+
+.cv-container > header {
+    animation-delay: 0.1s;
+}
+
+.cv-container > .profile-section {
+    animation-delay: 0.2s;
+}
+
+.cv-container > .cv-divider:nth-of-type(1) {
+    animation-delay: 0.3s;
+}
+
+.cv-container > .cv-grid {
+    animation-delay: 0.4s;
+}
+
+.cv-container > .cv-divider:nth-of-type(2) {
+    animation-delay: 0.5s;
+}
+
+.cv-container > .projects-section {
+    animation-delay: 0.6s;
+}
+
+/* ========== UTILIDADES DE ACCESIBILIDAD ========== */
+
+
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/**
+ * Ajustes para pantallas grandes
+ */
+@media (min-width: 1280px) {
+    .cv-container {
+        padding: 5rem;
+    }
+}
+
+/**
+ * Ajustes para impresión
+ */
+@media print {
+    body {
+        background-color: white;
+        color: black;
+    }
+    
+    .cv-container > * {
+        opacity: 1 !important;
+        animation: none !important;
+    }
+    
+    a {
+        text-decoration: underline;
+    }
+    
+    .link-icon {
+        display: none;
+    }
+}
+
+
+/**
+ * Mejorar el contraste en modo de alto contraste
+ */
+@media (prefers-contrast: high) {
+    :root {
+        --color-foreground: #000000;
+        --color-background: #FFFFFF;
+        --color-muted-foreground: #404040;
+    }
+}
