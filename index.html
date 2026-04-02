@@ -1,172 +1,305 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L3H5M582Z8"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-L3H5M582Z8');
-    </script>
-
-    <!-- Metadatos básicos -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Currículum vitae de Guillermo Gabriel Giménez - Desarrollador Web especializado en React, JavaScript y diseño moderno.">
-    <meta name="author" content="Guillermo Gabriel Giménez">
-    <meta name="keywords" content="desarrollador web, React, JavaScript, Tailwind CSS, portfolio">
+    <title>Guillermo Gabriel Giménez - CV</title>
     
-    <!-- Open Graph para redes sociales -->
-    <meta property="og:title" content="Guillermo G. - Desarrollador Web">
-    <meta property="og:description" content="Desarrollador Web especializado en React y JavaScript">
-    <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&display=swap" rel="stylesheet">
     
-    <title>Guillermo G.</title>
-    
-  <!-- Estilos -->
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&family=Lora:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* ========== PALETA DE COLORES PERSONALIZADA ========== */
+        :root {
+            /* Textos Principales */
+            --slate-dark: #191919;
+            --slate-medium: #262625;
+            --slate-light: #40403E;
+            
+            /* Textos Secundarios y Metadatos */
+            --cloud-dark: #666663;
+            --cloud-medium: #91918D;
+            --cloud-light: #BFBFBA;
+            
+            /* Fondos y Divisores */
+            --ivory-dark: #E5E4DF;
+            --ivory-medium: #F0EFEA;
+            --ivory-light: #FAFAF7;
+            
+            /* Acentos e Interacciones */
+            --burnt-umber: #802A23;
+            --dark-chestnut: #9F6A60;
+            --peach-puff: #FFDDB8;
+            
+            --font-serif: 'Noto Serif JP', serif;
+        }
+
+        /* ========== ESTILOS BASE ========== */
+        body {
+            background-color: var(--ivory-light);
+            color: var(--slate-dark);
+            font-family: var(--font-serif);
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem 1rem;
+        }
+
+        .cv-wrapper {
+            width: 100%;
+            max-width: 720px;
+            background-color: var(--ivory-light);
+            padding: 1rem;
+        }
+
+        /* ========== TIPOGRAFÍA Y SECCIONES ========== */
+        h1 { 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+            letter-spacing: -0.01em;
+            color: var(--slate-dark);
+            margin: 0;
+        }
+
+        h3 { 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            letter-spacing: 0.05em; 
+            text-transform: uppercase;
+            color: var(--slate-medium);
+            border: none;
+            margin: 0;
+        }
+
+        p, li, span { 
+            font-size: 0.85rem; 
+            line-height: 1.6; 
+            text-align: left;
+        }
+
+        .section-ref {
+            font-size: 0.75rem;
+            color: var(--cloud-medium);
+            font-weight: 400;
+            margin-left: 10px;
+            font-family: var(--font-serif);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: var(--ivory-dark);
+            margin: 1.75rem 0;
+            border: none;
+        }
+
+        /* ========== GRID DE 3 COLUMNAS ========== */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            align-items: start;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+        }
+
+        .bullet { 
+            color: var(--burnt-umber);
+            margin-right: 8px;
+            font-size: 0.65rem;
+            vertical-align: middle;
+        }
+
+        .text-muted {
+            color: var(--cloud-dark);
+            font-size: 0.75rem;
+        }
+
+        /* ========== PROYECTOS ========== */
+        .project-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            color: var(--slate-dark);
+        }
+
+        .project-link:hover {
+            color: var(--dark-chestnut);
+        }
+
+        .project-number {
+            color: var(--burnt-umber);
+            font-weight: 700;
+            margin-right: 0.5rem;
+            font-size: 0.75rem;
+            vertical-align: super;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: var(--dark-chestnut);
+        }
+
+        /* ========== ANIMACIÓN ESCALONADA TRANQUILA ========== */
+        .animate-row {
+            opacity: 0; 
+            animation: tranquilFade 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation-delay: calc(var(--row-index) * 0.35s);
+        }
+
+        @keyframes tranquilFade {
+            0% { 
+                opacity: 0; 
+                transform: translateY(20px); 
+                filter: blur(8px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0); 
+                filter: blur(0); 
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-3">
-  <!-- Contenedor principal del CV -->
-  <main class="cv-container" role="main" aria-label="Currículum Vitae de Guillermo Gabriel Giménez">
-    
-    <!-- Sección combinada: encabezado y perfil profesional -->
-    <section class="cv-section profile-section" aria-labelledby="profile-heading">
-      <div class="cv-header" role="banner">
-        <h1 class="cv-title">Guillermo Gabriel Giménez</h1>
-        <span class="section-ref" aria-label="Referencia de sección 1">[1]</span>
-      </div>
-      <div style="height: var(--spacing-lg);"></div>
-      <div class="section-content">
-        <p class="profile-text" id="profile-heading">Estudiante de Ingeniería Informática (UBP, Córdoba). Especializado en desarrollo web full-stack. Experiencia práctica en React, JavaScript, bases de datos y sistemas distribuidos.
-        <br></br>
-        Actualmente desarrollando proyectos propios como método de aprendizaje práctico.</p>
-      </div>
-      <p class="location-text">Córdoba, Argentina.</p>
-    </section>
+<body>
 
-    <!-- Divisor visual -->
-    <hr class="cv-divider" aria-hidden="true">
-
-    <!-- Sección de contacto, habilidades y educación -->
-    <section class="cv-grid" aria-label="Información profesional">
-      
-      <!-- Columna de contacto e idiomas -->
-      <div class="cv-column">
-        <div class="column-header">
-          <h3 class="column-title" id="contact-heading">CONTACTO</h3>
-          <span class="section-ref" aria-label="Referencia de sección 2">[2]</span>
-        </div>
+    <main class="cv-wrapper">
         
-        <!-- Lista de enlaces de contacto -->
-        <ul class="link-list" role="list" aria-labelledby="contact-heading">
-          <li>
-            <a href="mailto:guillermo.it@proton.me" class="cv-link" aria-label="Enviar correo electrónico">
-              <span class="link-label">▪ Mail</span>
-              <span class="link-icon" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://linkedin.com/in/gillermogimenez" target="_blank" rel="noopener noreferrer" class="cv-link" aria-label="Ver perfil de LinkedIn (se abre en nueva pestaña)">
-              <span class="link-label">▪ LinkedIn</span>
-              <span class="link-icon" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a href="https://github.com/gabexe" target="_blank" rel="noopener noreferrer" class="cv-link" aria-label="Ver perfil de GitHub (se abre en nueva pestaña)">
-              <span class="link-label">▪ GitHub</span>
-              <span class="link-icon" aria-hidden="true">↗</span>
-            </a>
-          </li>
-        </ul>
-        
-        <!-- Subsección de idiomas -->
-        <div class="subsection">
-          <h3 class="subsection-title">IDIOMAS</h3>
-          <ul class="language-list" role="list">
-          <li class="language-item language"><span class="lang-bullet">▪</span><span class="lang-name">Español</span><span class="lang-level">Nativo</span></li>
-          <li class="language-item language"><span class="lang-bullet">▪</span><span class="lang-name">Inglés</span><span class="lang-level">Conversacional</span></li>
-          </ul>
-        </div>
-      </div>
-      
-      <!-- Columna de habilidades -->
-      <div class="cv-column">
-        <div class="column-header">
-          <h3 class="column-title" id="skills-heading">HABILIDADES</h3>
-          <span class="section-ref" aria-label="Referencia de sección 3">[3]</span>
-        </div>
-        <ul class="skills-list" role="list" aria-labelledby="skills-heading">
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> React, JavaScript</li>
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Tailwind CSS</li>
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Java, C++</li>
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Photoshop & Affinity</li>
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> Git & GitHub</li>
-          <li class="skill-item"><span class="skill-bullet" aria-hidden="true">▪</span> IA & Automatización</li>
-        </ul>
-      </div>
-      
-      <!-- Columna de educación -->
-      <div class="cv-column">
-        <div class="column-header">
-          <h3 class="column-title" id="education-heading">EDUCACIÓN</h3>
-          <span class="section-ref" aria-label="Referencia de sección 4">[4]</span>
-        </div>
-        
-        <!-- Lista de estudios -->
-        <div class="education-list" aria-labelledby="education-heading">
-          <article class="education-item">
-            <h3 class="education-title">▪ Ingeniería Informática</h3>
-            <p class="education-institution">Universidad Blas Pascal</p>
-            <time class="education-period" datetime="2025/2026">2025 – 2026</time>
-          </article>
-          
-          <article class="education-item">
-            <h3 class="education-title">▪ Téc. Superior en Informática</h3>
-            <p class="education-institution">IDES Instituto de Enseñanza Superior</p>
-            <time class="education-period" datetime="2021/2024">2021 – 2024</time>
-          </article>
-        </div>
-      </div>
-    </section>
+        <header class="animate-row" style="--row-index: 1;">
+            <div class="flex justify-between items-baseline mb-4">
+                <h1>Guillermo Gabriel Giménez</h1>
+                <span class="section-ref">[1]</span>
+            </div>
+            <div class="max-w-2xl">
+                <p class="mb-4">
+                    Estudiante de Ingeniería Informática (UBP, Córdoba). Especializado en diseño y desarrollo web. Experiencia práctica en React, JavaScript, bases de datos y sistemas distribuidos.
+                </p>
+                <p>
+                    Actualmente desarrollando proyectos propios como método de aprendizaje práctico.
+                </p>
+                <p class="mt-2" style="color: var(--cloud-dark); font-style: italic;">Córdoba, Argentina.</p>
+            </div>
+        </header>
 
-    <!-- Divisor visual -->
-    <hr class="cv-divider" aria-hidden="true">
+        <hr class="divider animate-row" style="--row-index: 2;">
 
-    <!-- Sección de proyectos -->
-    <section class="cv-section projects-section" aria-labelledby="projects-heading">
-      <div class="column-header">
-        <h3 class="column-title" id="projects-heading">PROYECTOS</h3>
-        <span class="section-ref" aria-label="Referencia de sección 5">[5]</span>
-      </div>
-      
-      <!-- Lista de proyectos con enlaces -->
-      <ul class="projects-list" role="list" aria-labelledby="projects-heading">
-        <li>
-          <a href="https://gabexe.github.io/impostor" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Ver proyecto Impostor - Juego (se abre en nueva pestaña)">
-            <span class="project-name">
-              <span class="project-number">¹</span> Impostor 
-              <span class="project-tag">( Game )</span>
-            </span>
-            <span class="link-icon" aria-hidden="true">↗</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://gabexe.github.io/desconectados" target="_blank" rel="noopener noreferrer" class="project-link" aria-label="Ver proyecto En palabras - Juego (se abre en nueva pestaña)">
-            <span class="project-name">
-              <span class="project-number">²</span> En palabras 
-              <span class="project-tag">( Game )</span>
-            </span>
-            <span class="link-icon" aria-hidden="true">↗</span>
-          </a>
-        </li>
-      </ul>
-    </section>
-    
-  </main>
+        <section class="info-grid animate-row" style="--row-index: 3;">
+            
+            <div>
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3>Contacto</h3>
+                    <span class="section-ref">[2]</span>
+                </div>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="mailto:guillermo.it@proton.me" class="flex justify-between w-full transition-colors hover:text-[#9F6A60]">
+                            <span><span class="bullet">▪</span>Mail</span> 
+                            <span class="text-[0.6rem] text-muted">↗</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://linkedin.com/in/gillermogimenez" target="_blank" class="flex justify-between w-full transition-colors hover:text-[#9F6A60]">
+                            <span><span class="bullet">▪</span>LinkedIn</span> 
+                            <span class="text-[0.6rem] text-muted">↗</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/gabexe" target="_blank" class="flex justify-between w-full transition-colors hover:text-[#9F6A60]">
+                            <span><span class="bullet">▪</span>GitHub</span> 
+                            <span class="text-[0.6rem] text-muted">↗</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="mt-8">
+                    <h3 style="font-size: 0.65rem; color: var(--cloud-medium); margin-bottom: 0.5rem;">IDIOMAS</h3>
+                    <div class="flex justify-between mb-1">
+                        <span><span class="bullet">▪</span>Español</span>
+                        <span class="text-muted">Nativo</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span><span class="bullet">▪</span>Inglés</span>
+                        <span class="text-muted italic">Conv.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3>Habilidades</h3>
+                    <span class="section-ref">[3]</span>
+                </div>
+                <ul class="space-y-1">
+                    <li><span class="bullet">▪</span>HTML & CSS</li>
+                    <li><span class="bullet">▪</span>React, JavaScript</li>
+                    <li><span class="bullet">▪</span>Tailwind CSS</li>
+                    <li><span class="bullet">▪</span>Java, C++</li>
+                    <li><span class="bullet">▪</span>Photoshop</li>
+                    <li><span class="bullet">▪</span>Git & GitHub</li>
+                    <li><span class="bullet">▪</span>IA & Automatización</li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3>Educación</h3>
+                    <span class="section-ref">[4]</span>
+                </div>
+                <div class="space-y-6">
+                    <article>
+                        <p class="font-medium leading-snug"><span class="bullet">▪</span>Ing. Informática</p>
+                        <p class="text-muted ml-4">Universidad Blas Pascal</p>
+                        <p class="text-muted ml-4">2025 – 2026</p>
+                    </article>
+                    <article>
+                        <p class="font-medium leading-snug"><span class="bullet">▪</span>Téc. en Informática</p>
+                        <p class="text-muted ml-4">IDES Superior</p>
+                        <p class="text-muted ml-4">2021 – 2024</p>
+                    </article>
+                </div>
+            </div>
+
+        </section>
+<!-- 
+        <hr class="divider animate-row" style="--row-index: 4;">
+
+        <section class="animate-row" style="--row-index: 5;">
+            <div class="flex justify-between items-baseline mb-4">
+                <h3>Proyectos Seleccionados</h3>
+                <span class="section-ref">[5]</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-2">
+                <a href="https://gabexe.github.io/impostor" target="_blank" class="project-link">
+                    <span><span class="project-number">1</span>Impostor <span class="text-muted ml-1">( Game )</span></span>
+                    <span class="text-[0.6rem] text-muted">↗</span>
+                </a>
+                <a href="https://gabexe.github.io/desconectados" target="_blank" class="project-link">
+                    <span><span class="project-number">2</span>En palabras <span class="text-muted ml-1">( Game )</span></span>
+                    <span class="text-[0.6rem] text-muted">↗</span>
+                </a>
+                <a href="#" class="project-link">
+                    <span><span class="project-number">3</span>GeoSnap <span class="text-muted ml-1">( Web )</span></span>
+                    <span class="text-[0.6rem] text-muted">↗</span>
+                </a>
+            </div>
+        </section> -->
+
+    </main>
+
 </body>
 </html>
